@@ -1,13 +1,14 @@
 ﻿@page "/fetchdata"
 
-@using DevOps.Products.Website.Data
-@inject WeatherForecastService ForecastService
+@using DevOps.Products.Website.Services.Interfaces
+@using DevOps.Products.Website.Models.ViewModels
+@inject IProductListService ProductListService
 
-<h1>Weather forecast</h1>
+<h1>Products</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if (forecasts == null)
+@if (products == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -16,20 +17,18 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Name</th>
+                <th>Brand</th>
+                <th>Category</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (ProductListViewModel product in products)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@product.Name</td>
+                    <td>@product.Brand</td>
+                    <td>@product.Category</td>
                 </tr>
             }
         </tbody>
@@ -37,10 +36,10 @@ else
 }
 
 @code {
-    WeatherForecast[] forecasts;
+	private ProductListViewModel[] products;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+		products = await ProductListService.GetProductListViewModelsAsync();
     }
 }

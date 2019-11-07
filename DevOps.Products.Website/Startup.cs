@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DevOps.Products.Website.Data;
+using DevOps.Products.Website.Services.Implementations;
+using DevOps.Products.Website.Services.Interfaces;
+using DevOps.Products.Website.Services.Mocks;
 
 namespace DevOps.Products.Website
 {
@@ -28,7 +31,10 @@ namespace DevOps.Products.Website
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+
+            //services.AddSingleton<WeatherForecastService>();
+            services.AddScoped<IProductListService, ProductListService>();
+            services.AddScoped<IProductFacadeService, MockProductFacadeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
