@@ -7,11 +7,11 @@ using DevOps.Products.Website.Services.Interfaces;
 
 namespace DevOps.Products.Website.Services.Mocks
 {
-    public class MockProductFacadeService : IProductFacadeService
+    public class ProductFacadeServiceMock : IProductFacadeService
     {
         private IEnumerable<ProductDTO> _mockProductDtos;
 
-        public MockProductFacadeService()
+        public ProductFacadeServiceMock()
         {
             _mockProductDtos = new List<ProductDTO>()
             {
@@ -41,7 +41,7 @@ namespace DevOps.Products.Website.Services.Mocks
                 },
                 new ProductDTO()
                 {
-                    ID = 3,
+                    ID = 4,
                     Name = "Broccoli",
                     Brand = "Marge's Farms",
                     Category = "Vegetable",
@@ -52,7 +52,9 @@ namespace DevOps.Products.Website.Services.Mocks
 
         public async Task<IEnumerable<ProductDTO>> GetProductCollection(string name = null, string brand = null, string category = null)
         {
-            return _mockProductDtos;
+            return _mockProductDtos.Where(product => string.IsNullOrWhiteSpace(name) || product.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase))
+                                   .Where(product => string.IsNullOrWhiteSpace(brand) || product.Brand.Contains(brand, StringComparison.CurrentCultureIgnoreCase))
+                                   .Where(product => string.IsNullOrWhiteSpace(category) || product.Category.Contains(category, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public async Task<ProductDTO> GetProduct(int id)

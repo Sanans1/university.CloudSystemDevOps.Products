@@ -34,7 +34,8 @@ namespace DevOps.Products.Website
 
             //services.AddSingleton<WeatherForecastService>();
             services.AddScoped<IProductListService, ProductListService>();
-            services.AddScoped<IProductFacadeService, MockProductFacadeService>();
+            services.AddScoped<IProductDetailsService, ProductDetailsService>();
+            services.AddScoped<IProductFacadeService, ProductFacadeServiceMock>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

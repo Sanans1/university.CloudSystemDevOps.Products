@@ -1,0 +1,91 @@
+﻿@page "/products"
+
+@using DevOps.Products.Website.Services.Interfaces
+@using DevOps.Products.Website.Models.ViewModels
+@inject IProductListService ProductListService
+
+<h1>Products</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (_products == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<input type="text" @bind-value="Name" @bind-value:event="oninput" placeholder="Search by name.."/>
+	<input type="text" @bind-value="Brand" @bind-value:event="oninput" placeholder="Search by brand.."/>
+	<input type="text" @bind-value="Category" @bind-value:event="oninput" placeholder="Search by category.."/>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Brand</th>
+				<th>Category</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (ProductListViewModel product in _products)
+			{
+				<tr>
+					<td>@product.Name</td>
+					<td>@product.Brand</td>
+					<td>@product.Category</td>
+					<td><a href="/products/@product.ID">Details</a></td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+	private ProductListViewModel[] _products;
+
+	private string _name;
+	private string _brand;
+	private string _category;
+
+	public string Name
+	{
+		get => _name;
+		set
+		{
+			_name = value;
+			FilterProducts();
+		}
+	}
+
+	public string Brand
+	{
+		get => _brand;
+		set
+		{
+			_brand = value;
+			FilterProducts();
+		}
+	}
+
+	public string Category
+	{
+		get => _category;
+		set
+		{
+			_category = value;
+			FilterProducts();
+		}
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		_products = await ProductListService.GetProductListViewModelsAsync();
+	}
+
+	private async void FilterProducts()
+	{
+		_products = await ProductListService.GetProductListViewModelsAsync(Name, Brand, Category);
+
+		this.StateHasChanged();
+	}
+}

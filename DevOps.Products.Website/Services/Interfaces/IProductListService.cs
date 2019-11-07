@@ -6,6 +6,6 @@ namespace DevOps.Products.Website.Services.Interfaces
 {
     public interface IProductListService
     {
-        Task<ProductListViewModel[]> GetProductListViewModelsAsync();
+        Task<ProductListViewModel[]> GetProductListViewModelsAsync(string name = null, string brand = null, string category = null);
     }
 }

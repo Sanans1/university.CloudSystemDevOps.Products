@@ -17,9 +17,9 @@ namespace DevOps.Products.Website.Services.Implementations
             _productFacadeService = productFacadeService;
         }
 
-        public async Task<ProductListViewModel[]> GetProductListViewModelsAsync()
+        public async Task<ProductListViewModel[]> GetProductListViewModelsAsync(string name = null, string brand = null, string category = null)
         {
-            IEnumerable<ProductDTO> products = await _productFacadeService.GetProductCollection();
+            IEnumerable<ProductDTO> products = await _productFacadeService.GetProductCollection(name, brand, category);
 
             return products.Select(product => new ProductListViewModel(product)).ToArray();
         }

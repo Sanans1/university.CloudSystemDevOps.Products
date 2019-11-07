@@ -1,0 +1,47 @@
+﻿@page "/products/{ProductID}"
+
+@using DevOps.Products.Website.Services.Interfaces
+@using DevOps.Products.Website.Models.ViewModels
+@inject IProductDetailsService ProductDetailsService
+
+<h1>Products</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (_product == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Brand</th>
+				<th>Category</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>@_product.Name</td>
+				<td>@_product.Brand</td>
+				<td>@_product.Category</td>
+				<td>@_product.Description</td>
+			</tr>
+		</tbody>
+	</table>
+}
+
+@code {
+	[Parameter]
+	public string ProductID { get; set; }
+
+	private ProductDetailsViewModel _product;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_product = await ProductDetailsService.GetProductDetailsViewModelAsync(int.Parse(ProductID));
+	}
+}
+
