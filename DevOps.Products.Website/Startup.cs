@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DevOps.Products.Website.Data;
 using DevOps.Products.Website.Services.Implementations;
 using DevOps.Products.Website.Services.Interfaces;
 using DevOps.Products.Website.Services.Mocks;
@@ -32,7 +31,6 @@ namespace DevOps.Products.Website
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            //services.AddSingleton<WeatherForecastService>();
             services.AddScoped<IProductListService, ProductListService>();
             services.AddScoped<IProductDetailsService, ProductDetailsService>();
             services.AddScoped<IProductFacadeService, ProductFacadeServiceMock>();

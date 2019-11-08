@@ -24,5 +24,6 @@ namespace DevOps.Products.Website.Models.ViewModels
         public string Brand { get; set; }
         public string Category { get; set; }
         public string Description { get; set; }
+        public ReviewViewModel[] ReviewViewModels { get; set; }
     }
 }

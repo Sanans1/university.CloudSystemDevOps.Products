@@ -10,12 +10,19 @@ namespace DevOps.Products.Website.Services.Implementations
 {
     public class ProductDetailsService : IProductDetailsService
     {
+
+        #region fields
+
         private readonly IProductFacadeService _productFacadeService;
+
+        #endregion
 
         public ProductDetailsService(IProductFacadeService productFacadeService)
         {
             _productFacadeService = productFacadeService;
         }
+
+        #region methods
 
         public async Task<ProductDetailsViewModel> GetProductDetailsViewModelAsync(int id)
         {
@@ -23,5 +30,8 @@ namespace DevOps.Products.Website.Services.Implementations
 
             return new ProductDetailsViewModel(product);
         }
+
+        #endregion
+
     }
 }

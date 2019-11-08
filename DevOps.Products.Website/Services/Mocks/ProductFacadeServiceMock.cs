@@ -9,7 +9,12 @@ namespace DevOps.Products.Website.Services.Mocks
 {
     public class ProductFacadeServiceMock : IProductFacadeService
     {
+
+        #region fields
+
         private IEnumerable<ProductDTO> _mockProductDtos;
+
+        #endregion
 
         public ProductFacadeServiceMock()
         {
@@ -50,6 +55,8 @@ namespace DevOps.Products.Website.Services.Mocks
             };
         }
 
+        #region methods
+
         public async Task<IEnumerable<ProductDTO>> GetProductCollection(string name = null, string brand = null, string category = null)
         {
             return _mockProductDtos.Where(product => string.IsNullOrWhiteSpace(name) || product.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase))
@@ -61,5 +68,7 @@ namespace DevOps.Products.Website.Services.Mocks
         {
             return _mockProductDtos.Single(product => product.ID == id);
         }
+
+        #endregion
     }
 }
