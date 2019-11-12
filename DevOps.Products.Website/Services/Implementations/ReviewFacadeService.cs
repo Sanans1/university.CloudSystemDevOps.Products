@@ -15,7 +15,7 @@ namespace DevOps.Products.Website.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public async Task CreateReview(ReviewDTO reviewDTO)
+        public async Task<bool> CreateReview(ReviewDTO reviewDTO)
         {
             throw new NotImplementedException();
         }

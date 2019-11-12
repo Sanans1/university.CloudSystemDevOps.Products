@@ -41,9 +41,10 @@ namespace DevOps.Products.Website.Services.Mocks
             return _mockReviewDTOs.Where(review => review.ProductID == id);
         }
 
-        public async Task CreateReview(ReviewDTO reviewDTO)
+        public async Task<bool> CreateReview(ReviewDTO reviewDTO)
         {
             _mockReviewDTOs.Add(reviewDTO);
+            return true;
         }
 
         public async Task DeleteReview(int id)

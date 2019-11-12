@@ -2,6 +2,7 @@
 
 @using DevOps.Products.Website.Services.Interfaces
 @using DevOps.Products.Website.Models.ViewModels
+@using Microsoft.AspNetCore.Components
 @inject IProductDetailsService ProductDetailsService
 
 <h1>Products</h1>
@@ -58,9 +59,15 @@ else
 			</tbody>
 		</table>
 	}
+	<input type="number" @bind="Rating" placeholder="Add a rating..."/>
+	<input type="text" @bind="ReviewText" placeholder="Write a review..."/>
+	<button @onclick="SubmitReview">Submit</button>
 }
 
 @code {
+	public int? Rating { get; set; }
+	public string ReviewText { get; set; }
+
 	[Parameter]
 	public string ProductID { get; set; }
 
@@ -68,6 +75,14 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
+		_product = await ProductDetailsService.GetProductDetailsViewModelAsync(int.Parse(ProductID));
+	}
+
+	private async void SubmitReview()
+	{
+		bool successful = await ProductDetailsService.SubmitReview(_product, ReviewText, Rating.Value);
+		ReviewText = null;
+		Rating = null;
 		_product = await ProductDetailsService.GetProductDetailsViewModelAsync(int.Parse(ProductID));
 	}
 }

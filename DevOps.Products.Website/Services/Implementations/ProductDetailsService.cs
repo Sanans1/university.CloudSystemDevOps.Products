@@ -31,7 +31,20 @@ namespace DevOps.Products.Website.Services.Implementations
             ProductDTO product = await _productFacadeService.GetProduct(id);
             IEnumerable<ReviewDTO> reviews = await _reviewFacadeService.GetReviewCollection(id);
 
-            return new ProductDetailsViewModel(product, reviews);
+            return new ProductDetailsViewModel(product, reviews, null/*TODO Add a Customer Facade*/);
+        }
+
+        public async Task<bool> SubmitReview(ProductDetailsViewModel productDetailsViewModel, string reviewText, int rating)
+        {
+            ReviewDTO reviewDTO = new ReviewDTO()
+            {
+                CustomerName = "Lewis",//productDetailsViewModel.CustomerViewModel.CustomerName,
+                Text = reviewText,
+                Rating = rating,
+                ProductID = productDetailsViewModel.ID
+            };
+
+            return await _reviewFacadeService.CreateReview(reviewDTO);
         }
 
         #endregion
