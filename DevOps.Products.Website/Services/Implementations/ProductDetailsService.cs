@@ -14,12 +14,14 @@ namespace DevOps.Products.Website.Services.Implementations
         #region fields
 
         private readonly IProductFacadeService _productFacadeService;
+        private readonly IReviewFacadeService _reviewFacadeService;
 
         #endregion
 
-        public ProductDetailsService(IProductFacadeService productFacadeService)
+        public ProductDetailsService(IProductFacadeService productFacadeService, IReviewFacadeService reviewFacadeService)
         {
             _productFacadeService = productFacadeService;
+            _reviewFacadeService = reviewFacadeService;
         }
 
         #region methods
@@ -27,8 +29,9 @@ namespace DevOps.Products.Website.Services.Implementations
         public async Task<ProductDetailsViewModel> GetProductDetailsViewModelAsync(int id)
         {
             ProductDTO product = await _productFacadeService.GetProduct(id);
+            IEnumerable<ReviewDTO> reviews = await _reviewFacadeService.GetReviewCollection(id);
 
-            return new ProductDetailsViewModel(product);
+            return new ProductDetailsViewModel(product, reviews);
         }
 
         #endregion

@@ -10,13 +10,15 @@ namespace DevOps.Products.Website.Models.ViewModels
     {
         public ProductDetailsViewModel() { }
 
-        public ProductDetailsViewModel(ProductDTO productDto)
+        public ProductDetailsViewModel(ProductDTO productDTO, IEnumerable<ReviewDTO> reviewDTOs)
         {
-            ID = productDto.ID;
-            Name = productDto.Name;
-            Brand = productDto.Brand;
-            Category = productDto.Category;
-            Description = productDto.Description;
+            ID = productDTO.ID;
+            Name = productDTO.Name;
+            Brand = productDTO.Brand;
+            Category = productDTO.Category;
+            Description = productDTO.Description;
+
+            ReviewViewModels = reviewDTOs.Select(review => new ReviewViewModel(review)).ToArray();
         }
 
         public int ID { get; set; }
@@ -24,6 +26,7 @@ namespace DevOps.Products.Website.Models.ViewModels
         public string Brand { get; set; }
         public string Category { get; set; }
         public string Description { get; set; }
+
         public ReviewViewModel[] ReviewViewModels { get; set; }
     }
 }

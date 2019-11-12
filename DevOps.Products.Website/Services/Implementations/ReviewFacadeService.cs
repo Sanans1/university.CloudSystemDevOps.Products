@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DevOps.Products.Website.Models.DTOs;
+using DevOps.Products.Website.Models.ViewModels;
 using DevOps.Products.Website.Services.Interfaces;
 
 namespace DevOps.Products.Website.Services.Implementations
 {
-    public class ReviewFacadeService
+    public class ReviewFacadeService : IReviewFacadeService
     {
-        public async Task<IEnumerable<ProductDTO>> GetReviewCollection(int id)
+        public async Task<IEnumerable<ReviewDTO>> GetReviewCollection(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task CreateReview()//TODO Create a review DTO? Maybe just take string as parameter
+        public async Task CreateReview(ReviewDTO reviewDTO)
         {
             throw new NotImplementedException();
         }

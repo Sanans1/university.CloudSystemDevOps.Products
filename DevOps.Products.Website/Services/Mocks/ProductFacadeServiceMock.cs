@@ -12,13 +12,13 @@ namespace DevOps.Products.Website.Services.Mocks
 
         #region fields
 
-        private IEnumerable<ProductDTO> _mockProductDtos;
+        private readonly IEnumerable<ProductDTO> _mockProductDTOs;
 
         #endregion
 
         public ProductFacadeServiceMock()
         {
-            _mockProductDtos = new List<ProductDTO>()
+            _mockProductDTOs = new List<ProductDTO>()
             {
                 new ProductDTO()
                 {
@@ -59,14 +59,14 @@ namespace DevOps.Products.Website.Services.Mocks
 
         public async Task<IEnumerable<ProductDTO>> GetProductCollection(string name = null, string brand = null, string category = null)
         {
-            return _mockProductDtos.Where(product => string.IsNullOrWhiteSpace(name) || product.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase))
+            return _mockProductDTOs.Where(product => string.IsNullOrWhiteSpace(name) || product.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase))
                                    .Where(product => string.IsNullOrWhiteSpace(brand) || product.Brand.Contains(brand, StringComparison.CurrentCultureIgnoreCase))
                                    .Where(product => string.IsNullOrWhiteSpace(category) || product.Category.Contains(category, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public async Task<ProductDTO> GetProduct(int id)
         {
-            return _mockProductDtos.Single(product => product.ID == id);
+            return _mockProductDTOs.Single(product => product.ID == id);
         }
 
         #endregion

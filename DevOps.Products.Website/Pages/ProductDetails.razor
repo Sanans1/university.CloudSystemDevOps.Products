@@ -32,6 +32,32 @@ else
 			</tr>
 		</tbody>
 	</table>
+	@if (!_product.ReviewViewModels.Any())
+	{
+		<p><em>No Reviews yet!</em></p>
+	}
+	else
+	{
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Customer</th>
+					<th>Text</th>
+					<th>Rating</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (ReviewViewModel review in _product.ReviewViewModels)
+				{
+					<tr>
+						<td>@review.CustomerName</td>
+						<td>@review.Text</td>
+						<td>@review.Rating</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	}
 }
 
 @code {

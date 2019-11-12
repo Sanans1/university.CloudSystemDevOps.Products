@@ -31,9 +31,13 @@ namespace DevOps.Products.Website
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
+            //Pages
             services.AddScoped<IProductListService, ProductListService>();
             services.AddScoped<IProductDetailsService, ProductDetailsService>();
+
+            //Facades
             services.AddScoped<IProductFacadeService, ProductFacadeServiceMock>();
+            services.AddScoped<IReviewFacadeService, ReviewFacadeServiceMock>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

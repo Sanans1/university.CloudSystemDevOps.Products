@@ -17,9 +17,12 @@ namespace DevOps.Products.Website.Models.ViewModels
             Rating = reviewDto.Rating;
             Text = reviewDto.Text;
         }
+
         public int ID { get; set; }
         public string CustomerName { get; set; }
         public int Rating { get; set; }
         public string Text { get; set; }
+
+        public int ProductID { get; set; }
     }
 }
