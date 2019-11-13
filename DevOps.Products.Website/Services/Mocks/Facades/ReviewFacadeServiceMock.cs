@@ -1,55 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DevOps.Products.Website.Models.DTOs;
-using DevOps.Products.Website.Models.ViewModels;
+using DevOps.Products.DTOs;
 using DevOps.Products.Website.Services.Interfaces;
+using DevOps.Products.Website.Services.Interfaces.Facades;
 
-namespace DevOps.Products.Website.Services.Mocks
+namespace DevOps.Products.Website.Services.Mocks.Facades
 {
     public class ReviewFacadeServiceMock : IReviewFacadeService
     {
 
-        private readonly ICollection<ReviewDTO> _mockReviewDTOs;
+        private readonly ICollection<ReviewDTO> _mockReviews;
 
         public ReviewFacadeServiceMock()
         {
-            _mockReviewDTOs = new List<ReviewDTO>()
+            _mockReviews = new List<ReviewDTO>
             {
                 new ReviewDTO()
                 {
                     ID = 1,
-                    CustomerName = "Richard",
                     Rating = 3,
                     Text = "It was alright...",
-                    ProductID = 1
+                    ProductID = 1,
+                    CustomerID = 2
                 },
                 new ReviewDTO()
                 {
                     ID = 2,
-                    CustomerName = "Mary",
                     Rating = 5,
                     Text = "I loved it!",
-                    ProductID = 1
+                    ProductID = 1,
+                    CustomerID = 3
                 }
             };
         }
 
         public async Task<IEnumerable<ReviewDTO>> GetReviewCollection(int id)
         {
-            return _mockReviewDTOs.Where(review => review.ProductID == id);
+            return _mockReviews.Where(review => review.ProductID == id);
         }
 
         public async Task<bool> CreateReview(ReviewDTO reviewDTO)
         {
-            _mockReviewDTOs.Add(reviewDTO);
+            _mockReviews.Add(reviewDTO);
             return true;
         }
 
         public async Task DeleteReview(int id)
         {
-            _mockReviewDTOs.Remove(_mockReviewDTOs.Single(review => review.ID == id));
+            _mockReviews.Remove(_mockReviews.Single(review => review.ID == id));
         }
     }
 }

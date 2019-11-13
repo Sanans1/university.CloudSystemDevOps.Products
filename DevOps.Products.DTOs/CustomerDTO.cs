@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace DevOps.Products.Website.Models.ViewModels
+namespace DevOps.Products.DTOs
 {
-    public class CustomerViewModel
+    public class CustomerDTO
     {
         public int ID { get; set; }
         public string Name { get; set; }

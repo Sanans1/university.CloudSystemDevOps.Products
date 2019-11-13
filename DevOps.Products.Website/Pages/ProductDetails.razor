@@ -1,7 +1,8 @@
 ﻿@page "/products/{ProductID}"
 
-@using DevOps.Products.Website.Services.Interfaces
 @using DevOps.Products.Website.Models.ViewModels
+@using DevOps.Products.Website.Models.ViewModels.Pages
+@using DevOps.Products.Website.Services.Interfaces.Pages
 @using Microsoft.AspNetCore.Components
 @inject IProductDetailsService ProductDetailsService
 
@@ -9,7 +10,7 @@
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if (_product == null)
+@if (_productDetailsViewModel == null)
 {
 	<p><em>Loading...</em></p>
 }
@@ -26,14 +27,14 @@ else
 		</thead>
 		<tbody>
 			<tr>
-				<td>@_product.Name</td>
-				<td>@_product.Brand</td>
-				<td>@_product.Category</td>
-				<td>@_product.Description</td>
+				<td>@_productDetailsViewModel.Product.Name</td>
+				<td>@_productDetailsViewModel.Product.Brand.Name</td>
+				<td>@_productDetailsViewModel.Product.Category.Name</td>
+				<td>@_productDetailsViewModel.Product.Description</td>
 			</tr>
 		</tbody>
 	</table>
-	@if (!_product.ReviewViewModels.Any())
+	@if (!_productDetailsViewModel.Reviews.Any())
 	{
 		<p><em>No Reviews yet!</em></p>
 	}
@@ -48,10 +49,10 @@ else
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (ReviewViewModel review in _product.ReviewViewModels)
+				@foreach (ReviewViewModel review in _productDetailsViewModel.Reviews)
 				{
 					<tr>
-						<td>@review.CustomerName</td>
+						<td>@review.Customer.Name</td>
 						<td>@review.Text</td>
 						<td>@review.Rating</td>
 					</tr>
@@ -59,31 +60,35 @@ else
 			</tbody>
 		</table>
 	}
-	<input type="number" @bind="Rating" placeholder="Add a rating..."/>
-	<input type="text" @bind="ReviewText" placeholder="Write a review..."/>
-	<button @onclick="SubmitReview">Submit</button>
+	<EditForm Model="@_review" OnValidSubmit="@SubmitReview">
+		<DataAnnotationsValidator/>
+		<ValidationSummary/>
+
+		<InputNumber @bind-Value="_review.Rating" placeholder="Add a rating..."/>
+		<InputText @bind-Value="_review.Text" placeholder="Write a review..."/>
+		<button type="submit">Submit</button>
+	</EditForm>
 }
 
 @code {
-	public int? Rating { get; set; }
-	public string ReviewText { get; set; }
+	private ProductDetailsViewModel _productDetailsViewModel;
+
+	private ReviewViewModel _review = new ReviewViewModel();
 
 	[Parameter]
 	public string ProductID { get; set; }
 
-	private ProductDetailsViewModel _product;
-
 	protected override async Task OnInitializedAsync()
 	{
-		_product = await ProductDetailsService.GetProductDetailsViewModelAsync(int.Parse(ProductID));
+		_productDetailsViewModel = await ProductDetailsService.GetProductDetailsViewModelAsync(int.Parse(ProductID));
 	}
 
 	private async void SubmitReview()
 	{
-		bool successful = await ProductDetailsService.SubmitReview(_product, ReviewText, Rating.Value);
-		ReviewText = null;
-		Rating = null;
-		_product = await ProductDetailsService.GetProductDetailsViewModelAsync(int.Parse(ProductID));
+		_review.Customer = _productDetailsViewModel.Customer;
+		_review.ProductID = _productDetailsViewModel.Product.ID;
+		bool successful = await ProductDetailsService.SubmitReview(_review);
+		_productDetailsViewModel = await ProductDetailsService.GetProductDetailsViewModelAsync(int.Parse(ProductID));
 	}
 }
 

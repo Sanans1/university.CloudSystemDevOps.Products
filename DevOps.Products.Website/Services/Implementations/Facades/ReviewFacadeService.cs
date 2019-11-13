@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using DevOps.Products.Website.Models.DTOs;
-using DevOps.Products.Website.Models.ViewModels;
+using DevOps.Products.DTOs;
 using DevOps.Products.Website.Services.Interfaces;
+using DevOps.Products.Website.Services.Interfaces.Facades;
 
-namespace DevOps.Products.Website.Services.Implementations
+namespace DevOps.Products.Website.Services.Implementations.Facades
 {
     public class ReviewFacadeService : IReviewFacadeService
     {

@@ -1,28 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using DevOps.Products.Website.Models.DTOs;
 
 namespace DevOps.Products.Website.Models.ViewModels
 {
     public class ReviewViewModel
     {
-        public ReviewViewModel() { }
-
-        public ReviewViewModel(ReviewDTO reviewDto)
-        {
-            ID = reviewDto.ID;
-            CustomerName = reviewDto.CustomerName;
-            Rating = reviewDto.Rating;
-            Text = reviewDto.Text;
-        }
-
         public int ID { get; set; }
-        public string CustomerName { get; set; }
+        [Required]
+        [Range(1,5)]
         public int Rating { get; set; }
+        [Required]
+        [StringLength(280)]
         public string Text { get; set; }
 
         public int ProductID { get; set; }
+        public CustomerViewModel Customer { get; set; }
     }
 }

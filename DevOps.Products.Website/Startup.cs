@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -10,8 +11,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DevOps.Products.Website.Services.Implementations;
+using DevOps.Products.Website.Services.Implementations.Pages;
 using DevOps.Products.Website.Services.Interfaces;
+using DevOps.Products.Website.Services.Interfaces.Facades;
+using DevOps.Products.Website.Services.Interfaces.Pages;
 using DevOps.Products.Website.Services.Mocks;
+using DevOps.Products.Website.Services.Mocks.Facades;
 
 namespace DevOps.Products.Website
 {
@@ -30,6 +35,7 @@ namespace DevOps.Products.Website
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddAutoMapper(typeof(Startup));
 
             //Pages
             services.AddScoped<IProductListService, ProductListService>();
@@ -38,6 +44,9 @@ namespace DevOps.Products.Website
             //Facades
             services.AddSingleton<IProductFacadeService, ProductFacadeServiceMock>();
             services.AddSingleton<IReviewFacadeService, ReviewFacadeServiceMock>();
+            services.AddSingleton<ICategoryFacadeService, CategoryFacadeServiceMock>();
+            services.AddSingleton<IBrandFacadeService, BrandFacadeServiceMock>();
+            services.AddSingleton<ICustomerFacadeService, CustomerFacadeServiceMock>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,13 +2,14 @@
 
 @using DevOps.Products.Website.Services.Interfaces
 @using DevOps.Products.Website.Models.ViewModels
+@using DevOps.Products.Website.Services.Interfaces.Pages
 @inject IProductListService ProductListService
 
 <h1>Products</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if (_products == null)
+@if (_productListViewModel.Products == null)
 {
 	<p><em>Loading...</em></p>
 }
@@ -27,12 +28,12 @@ else
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (ProductListViewModel product in _products)
+			@foreach (ProductViewModel product in _productListViewModel.Products)
 			{
 				<tr>
 					<td>@product.Name</td>
-					<td>@product.Brand</td>
-					<td>@product.Category</td>
+					<td>@product.Brand.Name</td>
+					<td>@product.Category.Name</td>
 					<td><a href="/products/@product.ID">Details</a></td>
 				</tr>
 			}
@@ -41,11 +42,11 @@ else
 }
 
 @code {
-	private ProductListViewModel[] _products;
+	private ProductListViewModel _productListViewModel;
 
 	private string _name;
-	private string _brand;
-	private string _category;
+	private int? _brand;
+	private int? _category;
 
 	public string Name
 	{
@@ -57,7 +58,7 @@ else
 		}
 	}
 
-	public string Brand
+	public int? Brand
 	{
 		get => _brand;
 		set
@@ -67,7 +68,7 @@ else
 		}
 	}
 
-	public string Category
+	public int? Category
 	{
 		get => _category;
 		set
@@ -79,12 +80,12 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		_products = await ProductListService.GetProductListViewModelsAsync();
+		_productListViewModel = await ProductListService.GetProductListViewModelsAsync();
 	}
 
 	private async void FilterProducts()
 	{
-		_products = await ProductListService.GetProductListViewModelsAsync(Name, Brand, Category);
+		_productListViewModel = await ProductListService.GetProductListViewModelsAsync(Name, Brand, Category);
 
 		this.StateHasChanged();
 	}
