@@ -25,9 +25,9 @@ namespace DevOps.Products.Website.Services.Implementations.Pages
             _brandFacadeService = brandFacadeService;
         }
 
-        public async Task<ProductListViewModel> GetProductListViewModelsAsync(string name = null, int? brandID = null, int? categoryID = null)
+        public async Task<ProductListViewModel> GetProductListViewModelsAsync(string name = null, int? categoryID = null, int? brandID = null)
         {
-            IEnumerable<ProductViewModel> products = _mapper.Map<IEnumerable<ProductViewModel>>(await _productFacadeService.GetProductCollection(name, brandID, categoryID));
+            IEnumerable<ProductViewModel> products = _mapper.Map<IEnumerable<ProductViewModel>>(await _productFacadeService.GetProductCollection(name, categoryID, brandID));
             IEnumerable<CategoryViewModel> categories = _mapper.Map<IEnumerable<CategoryViewModel>>(await _categoryFacadeService.GetCategoryCollection());
             IEnumerable<BrandViewModel> brands = _mapper.Map<IEnumerable<BrandViewModel>>(await _brandFacadeService.GetBrandCollection());
 
