@@ -1,8 +1,8 @@
 ﻿@page "/products"
 
 @using DevOps.Products.Website.Services.Interfaces
-@using DevOps.Products.Website.Models.ViewModels
 @using DevOps.Products.Website.Services.Interfaces.Pages
+@using DevOps.Products.Website.ViewModels
 @inject IProductListService ProductListService
 
 <h1>Products</h1>
@@ -40,7 +40,7 @@ else
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (ProductViewModel product in _productListViewModel.Products)
+			@foreach (ProductDetailsViewModel product in _productListViewModel.Products)
 			{
 				<tr>
 					<td>@product.Name</td>

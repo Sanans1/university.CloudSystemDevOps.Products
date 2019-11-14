@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevOps.Products.Website.Models.ViewModels
+namespace DevOps.Products.Products.REST.Models
 {
-    public class ProductViewModel
+    public class ProductDTO
     {
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public bool InStock { get; set; }
+        public int Quantity { get; set; }
 
-        public CategoryViewModel Category { get; set; }
-        public BrandViewModel Brand { get; set; }
+        public int CategoryID { get; set; }
+        public int BrandID { get; set; }
     }
 }

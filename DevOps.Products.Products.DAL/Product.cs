@@ -1,6 +1,9 @@
-﻿namespace DevOps.Products.DTOs
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DevOps.Products.Products.DAL
 {
-    public class ProductDTO
+    public class Product
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -10,5 +13,7 @@
 
         public int CategoryID { get; set; }
         public int BrandID { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

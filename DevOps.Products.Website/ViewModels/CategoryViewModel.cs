@@ -1,4 +1,4 @@
-﻿namespace DevOps.Products.Website.Models.ViewModels
+﻿namespace DevOps.Products.Website.ViewModels
 {
     public class CategoryViewModel
     {

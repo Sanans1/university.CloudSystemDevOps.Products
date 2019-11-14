@@ -1,8 +1,6 @@
 ﻿@page "/products/{ProductID}"
-
-@using DevOps.Products.Website.Models.ViewModels
-@using DevOps.Products.Website.Models.ViewModels.Pages
 @using DevOps.Products.Website.Services.Interfaces.Pages
+@using DevOps.Products.Website.ViewModels
 @using Microsoft.AspNetCore.Components
 @inject IProductDetailsService ProductDetailsService
 
@@ -89,6 +87,7 @@ else
 		_review.ProductID = _productDetailsViewModel.Product.ID;
 		bool successful = await ProductDetailsService.SubmitReview(_review);
 		_productDetailsViewModel = await ProductDetailsService.GetProductDetailsViewModelAsync(int.Parse(ProductID));
+		_review = new ReviewViewModel();
 	}
 }
 

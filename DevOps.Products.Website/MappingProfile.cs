@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DevOps.Products.DTOs;
-using DevOps.Products.Website.Models.ViewModels;
+using DevOps.Products.Website.ViewModels;
 
 namespace DevOps.Products.Website
 {
@@ -15,7 +15,7 @@ namespace DevOps.Products.Website
             CreateMap<CategoryDTO, CategoryViewModel>().ReverseMap();
             CreateMap<BrandDTO, BrandViewModel>().ReverseMap();
 
-            CreateMap<ProductDTO, ProductViewModel>().ForMember(destination => destination.InStock, options => options.MapFrom(source => source.Quantity > 0))
+            CreateMap<ProductDTO, ProductDetailsViewModel>().ForMember(destination => destination.InStock, options => options.MapFrom(source => source.Quantity > 0))
                                                      .ReverseMap();
 
             CreateMap<CustomerDTO, CustomerViewModel>().ReverseMap();
