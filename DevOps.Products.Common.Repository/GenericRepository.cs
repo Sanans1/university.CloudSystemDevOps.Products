@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -10,8 +11,8 @@ using Microsoft.EntityFrameworkCore;
 namespace DevOps.Products.Common.Repository
 {
     public class GenericRepository<TContext, TEntity, TDTO> : IGenericRepository<TEntity, TDTO> 
-                                                        where TContext : DbContext 
-                                                            where TEntity : class
+                                                            where TContext : DbContext 
+                                                            where TEntity : Entity
                                                             where TDTO : class
     {
         private readonly TContext _context;
@@ -31,6 +32,8 @@ namespace DevOps.Products.Common.Repository
             string includeProperties = "")
         {
             IQueryable<TEntity> entities = _dbSet;
+
+            entities = entities.Where(entity => entity.IsActive);
 
             if (filter != null)
             {
@@ -55,13 +58,15 @@ namespace DevOps.Products.Common.Repository
 
         public async Task<TDTO> GetByID(int id)
         {
-            TEntity entity = await _dbSet.FindAsync(id);
-            return _mapper.Map<TDTO>(entity);
+            TEntity foundEntity = await _dbSet.Where(entity => entity.IsActive).SingleAsync(entity => entity.ID == id);
+            return _mapper.Map<TDTO>(foundEntity);
         }
 
         public async Task Create(TDTO dto)
         {
             TEntity entity = _mapper.Map<TEntity>(dto);
+
+            entity.IsActive = true;
 
             await _dbSet.AddAsync(entity);
 
@@ -70,7 +75,7 @@ namespace DevOps.Products.Common.Repository
 
         public async Task Delete(int id)
         {
-            dynamic entityToDelete = await _dbSet.FindAsync(id);
+            TEntity entityToDelete = await _dbSet.FindAsync(id);
 
             entityToDelete.IsActive = false;
 
@@ -83,11 +88,18 @@ namespace DevOps.Products.Common.Repository
         public async Task Update(TDTO dto)
         {
             TEntity entityToUpdate = _mapper.Map<TEntity>(dto);
+            
+            if ((await _dbSet.FindAsync(entityToUpdate.ID)).IsActive == false) throw new DbUpdateConcurrencyException();
 
             _dbSet.Attach(entityToUpdate);
             _context.Entry(entityToUpdate).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> EntityExists(int id)
+        {
+            return await _dbSet.AnyAsync(entity => entity.ID == id);
         }
     }
 }

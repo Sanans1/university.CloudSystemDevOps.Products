@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using DevOps.Products.DTOs;
+using DevOps.Products.Website.Models.ViewModels;
+using DevOps.Products.Website.Models.ViewModels.ProductList;
 using DevOps.Products.Website.Services.Interfaces;
 using DevOps.Products.Website.Services.Interfaces.Facades;
 using DevOps.Products.Website.Services.Interfaces.Pages;
 using DevOps.Products.Website.States;
-using DevOps.Products.Website.ViewModels;
 
 namespace DevOps.Products.Website.Services.Implementations.Pages
 {
@@ -28,7 +28,7 @@ namespace DevOps.Products.Website.Services.Implementations.Pages
 
         public async Task<ProductListState> GetProductListViewModelsAsync(string name = null, int? categoryID = null, int? brandID = null)
         {
-            IEnumerable<ProductDetailsViewModel> products = _mapper.Map<IEnumerable<ProductDetailsViewModel>>(await _productFacadeService.GetProductCollection(name, categoryID, brandID));
+            IEnumerable<ProductViewModel> products = _mapper.Map<IEnumerable<ProductViewModel>>(await _productFacadeService.GetProductCollection(name, categoryID, brandID));
             IEnumerable<CategoryViewModel> categories = _mapper.Map<IEnumerable<CategoryViewModel>>(await _categoryFacadeService.GetCategoryCollection());
             IEnumerable<BrandViewModel> brands = _mapper.Map<IEnumerable<BrandViewModel>>(await _brandFacadeService.GetBrandCollection());
 

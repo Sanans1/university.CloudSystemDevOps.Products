@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DevOps.Products.DTOs;
+using DevOps.Products.Website.Models.DTOs;
 using DevOps.Products.Website.Services.Interfaces.Facades;
 
 namespace DevOps.Products.Website.Services.Implementations.Facades

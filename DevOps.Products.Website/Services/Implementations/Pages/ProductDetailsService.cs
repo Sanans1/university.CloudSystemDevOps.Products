@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using DevOps.Products.DTOs;
+using DevOps.Products.Website.Models.DTOs;
+using DevOps.Products.Website.Models.ViewModels;
+using DevOps.Products.Website.Models.ViewModels.ProductDetails;
 using DevOps.Products.Website.Services.Interfaces;
 using DevOps.Products.Website.Services.Interfaces.Facades;
 using DevOps.Products.Website.Services.Interfaces.Pages;
 using DevOps.Products.Website.States;
-using DevOps.Products.Website.ViewModels;
 
 namespace DevOps.Products.Website.Services.Implementations.Pages
 {
@@ -35,7 +36,7 @@ namespace DevOps.Products.Website.Services.Implementations.Pages
         {
             CustomerViewModel customer = _mapper.Map<CustomerViewModel>(await _customerFacadeService.GetCurrentCustomer());
 
-            ProductDetailsViewModel productDetails = _mapper.Map<ProductDetailsViewModel>(await _productFacadeService.GetProduct(id));
+            ProductViewModel productDetails = _mapper.Map<ProductViewModel>(await _productFacadeService.GetProduct(id));
 
             IEnumerable<ReviewViewModel> reviews = _mapper.Map<IEnumerable<ReviewViewModel>>(await _reviewFacadeService.GetReviewCollection(id));
 

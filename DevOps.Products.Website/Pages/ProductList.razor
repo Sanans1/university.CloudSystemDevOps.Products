@@ -1,15 +1,17 @@
 ﻿@page "/products"
 
+@using DevOps.Products.Website.Models.ViewModels
+@using DevOps.Products.Website.Models.ViewModels.ProductList
 @using DevOps.Products.Website.Services.Interfaces
 @using DevOps.Products.Website.Services.Interfaces.Pages
-@using DevOps.Products.Website.ViewModels
+@using DevOps.Products.Website.States
 @inject IProductListService ProductListService
 
 <h1>Products</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if (_productListViewModel.Products == null)
+@if (_productListState.Products == null)
 {
 	<p><em>Loading...</em></p>
 }
@@ -18,14 +20,14 @@ else
 	<input type="text" @bind-value="SearchString" @bind-value:event="oninput" placeholder="Search..."/>
 	<select @bind="SelectedCategoryID">
 		<option></option>
-		@foreach (CategoryViewModel category in _productListViewModel.Categories)
+		@foreach (CategoryViewModel category in _productListState.Categories)
 		{
 			<option value="@category.ID">@category.Name</option>
 		}
 	</select>
 	<select @bind="SelectedBrandID">
 		<option></option>
-		@foreach (BrandViewModel brand in _productListViewModel.Brands)
+		@foreach (BrandViewModel brand in _productListState.Brands)
 		{
 			<option value="@brand.ID">@brand.Name</option>
 		}
@@ -35,17 +37,17 @@ else
 		<thead>
 			<tr>
 				<th>Name</th>
-				<th>Brand</th>
 				<th>Category</th>
+				<th>Brand</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (ProductDetailsViewModel product in _productListViewModel.Products)
+			@foreach (ProductViewModel product in _productListState.Products)
 			{
 				<tr>
 					<td>@product.Name</td>
-					<td>@product.Brand.Name</td>
-					<td>@product.Category.Name</td>
+					<td>@product.CategoryName</td>
+					<td>@product.BrandName</td>
 					<td><a href="/products/@product.ID">Details</a></td>
 				</tr>
 			}
@@ -54,7 +56,7 @@ else
 }
 
 @code {
-	private ProductListViewModel _productListViewModel;
+	private ProductListState _productListState;
 
 	private string _searchString;
 	private int? _selectedCategoryID;
@@ -92,12 +94,12 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		_productListViewModel = await ProductListService.GetProductListViewModelsAsync();
+		_productListState = await ProductListService.GetProductListViewModelsAsync();
 	}
 
 	private async void FilterProducts()
 	{
-		_productListViewModel = await ProductListService.GetProductListViewModelsAsync(SearchString, SelectedCategoryID, SelectedBrandID);
+		_productListState = await ProductListService.GetProductListViewModelsAsync(SearchString, SelectedCategoryID, SelectedBrandID);
 
 		this.StateHasChanged();
 	}

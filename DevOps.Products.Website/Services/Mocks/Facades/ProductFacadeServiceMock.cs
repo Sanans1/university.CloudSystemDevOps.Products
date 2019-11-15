@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DevOps.Products.DTOs;
+using DevOps.Products.Website.Models.DTOs;
 using DevOps.Products.Website.Services.Interfaces.Facades;
 
 namespace DevOps.Products.Website.Services.Mocks.Facades
@@ -57,8 +57,10 @@ namespace DevOps.Products.Website.Services.Mocks.Facades
                     Description = "Amazingly Tasty Bananas!",
                     Price = 1.50m,
                     Quantity = 16,
-                    Category = _mockCategories.ElementAt(0),
-                    Brand = _mockBrands.ElementAt(0)
+                    CategoryID = _mockCategories.ElementAt(0).ID,
+                    CategoryName = _mockCategories.ElementAt(0).Name,
+                    BrandID = _mockBrands.ElementAt(0).ID,
+                    BrandName = _mockBrands.ElementAt(0).Name
                 },
                 new ProductDTO
                 {
@@ -67,8 +69,10 @@ namespace DevOps.Products.Website.Services.Mocks.Facades
                     Description = "Amazingly Tasty Oranges!",
                     Price = 2.09m,
                     Quantity = 0,
-                    Category = _mockCategories.ElementAt(0),
-                    Brand = _mockBrands.ElementAt(0)
+                    CategoryID = _mockCategories.ElementAt(0).ID,
+                    CategoryName = _mockCategories.ElementAt(0).Name,
+                    BrandID = _mockBrands.ElementAt(0).ID,
+                    BrandName = _mockBrands.ElementAt(0).Name
                 },
                 new ProductDTO
                 {
@@ -77,8 +81,10 @@ namespace DevOps.Products.Website.Services.Mocks.Facades
                     Price = 3.49m,
                     Quantity = 4,
                     Description = "Amazingly Nasty Bananas!",
-                    Category = _mockCategories.ElementAt(0),
-                    Brand = _mockBrands.ElementAt(1)
+                    CategoryID = _mockCategories.ElementAt(0).ID,
+                    CategoryName = _mockCategories.ElementAt(0).Name,
+                    BrandID = _mockBrands.ElementAt(1).ID,
+                    BrandName = _mockBrands.ElementAt(1).Name
                 },
                 new ProductDTO
                 {
@@ -87,8 +93,10 @@ namespace DevOps.Products.Website.Services.Mocks.Facades
                     Price = 2.99m,
                     Quantity = 526,
                     Description = "Tastes like a mini tree!",
-                    Category = _mockCategories.ElementAt(1),
-                    Brand = _mockBrands.ElementAt(1)
+                    CategoryID = _mockCategories.ElementAt(1).ID,
+                    CategoryName = _mockCategories.ElementAt(1).Name,
+                    BrandID = _mockBrands.ElementAt(1).ID,
+                    BrandName = _mockBrands.ElementAt(1).Name
                 }
             };
         }
@@ -97,10 +105,11 @@ namespace DevOps.Products.Website.Services.Mocks.Facades
 
         public async Task<IEnumerable<ProductDTO>> GetProductCollection(string searchString = null, int? categoryID = null, int? brandID = null)
         {
-            return _mockProducts.Where(product => string.IsNullOrWhiteSpace(searchString) || product.Name.Contains(searchString, StringComparison.CurrentCultureIgnoreCase))
-                                .Where(product => string.IsNullOrWhiteSpace(searchString) || product.Description.Contains(searchString, StringComparison.CurrentCultureIgnoreCase))
-                                .Where(product => categoryID == null || product.Category.ID == categoryID)
-                                .Where(product => brandID == null || product.Brand.ID == brandID);
+            return _mockProducts.Where(product => string.IsNullOrWhiteSpace(searchString) || 
+                                                  product.Name.Contains(searchString, StringComparison.CurrentCultureIgnoreCase) || 
+                                                  product.Description.Contains(searchString, StringComparison.CurrentCultureIgnoreCase))
+                                                  .Where(product => !categoryID.HasValue || product.CategoryID == categoryID)
+                                                  .Where(product => !brandID.HasValue || product.BrandID == brandID);
         }
 
         public async Task<ProductDTO> GetProduct(int id)

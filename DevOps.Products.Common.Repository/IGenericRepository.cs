@@ -18,5 +18,6 @@ namespace DevOps.Products.Common.Repository
         Task Create(TDTO dto);
         Task Delete(int id);
         Task Update(TDTO dto);
+        Task<bool> EntityExists(int id);
     }
 }

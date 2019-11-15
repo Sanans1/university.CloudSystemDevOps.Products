@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using DevOps.Products.Website.ViewModels;
-using DevOps.Products.Website.ViewModels.ProductList;
+using DevOps.Products.Website.Models.ViewModels;
+using DevOps.Products.Website.Models.ViewModels.ProductList;
 
 namespace DevOps.Products.Website.States
 {

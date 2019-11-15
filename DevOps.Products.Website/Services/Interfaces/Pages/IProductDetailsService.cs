@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using DevOps.Products.Website.Models.ViewModels;
 using DevOps.Products.Website.States;
-using DevOps.Products.Website.ViewModels;
 
 namespace DevOps.Products.Website.Services.Interfaces.Pages
 {

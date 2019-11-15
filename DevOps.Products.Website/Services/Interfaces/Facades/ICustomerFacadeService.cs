@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using DevOps.Products.DTOs;
+using DevOps.Products.Website.Models.DTOs;
 
 namespace DevOps.Products.Website.Services.Interfaces.Facades
 {

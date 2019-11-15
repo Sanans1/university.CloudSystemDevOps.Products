@@ -1,14 +1,15 @@
 ﻿@page "/products/{ProductID}"
+@using DevOps.Products.Website.Models.ViewModels
 @using DevOps.Products.Website.Services.Interfaces.Pages
-@using DevOps.Products.Website.ViewModels
 @using Microsoft.AspNetCore.Components
+@using DevOps.Products.Website.States
 @inject IProductDetailsService ProductDetailsService
 
 <h1>Products</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if (_productDetailsViewModel == null)
+@if (_productDetailsState == null)
 {
 	<p><em>Loading...</em></p>
 }
@@ -18,21 +19,21 @@ else
 		<thead>
 			<tr>
 				<th>Name</th>
-				<th>Brand</th>
 				<th>Category</th>
+				<th>Brand</th>
 				<th>Description</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td>@_productDetailsViewModel.Product.Name</td>
-				<td>@_productDetailsViewModel.Product.Brand.Name</td>
-				<td>@_productDetailsViewModel.Product.Category.Name</td>
-				<td>@_productDetailsViewModel.Product.Description</td>
+				<td>@_productDetailsState.Product.Name</td>
+				<td>@_productDetailsState.Product.CategoryName</td>
+				<td>@_productDetailsState.Product.BrandName</td>
+				<td>@_productDetailsState.Product.Description</td>
 			</tr>
 		</tbody>
 	</table>
-	@if (!_productDetailsViewModel.Reviews.Any())
+	@if (!_productDetailsState.Reviews.Any())
 	{
 		<p><em>No Reviews yet!</em></p>
 	}
@@ -47,7 +48,7 @@ else
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (ReviewViewModel review in _productDetailsViewModel.Reviews)
+				@foreach (ReviewViewModel review in _productDetailsState.Reviews)
 				{
 					<tr>
 						<td>@review.Customer.Name</td>
@@ -69,7 +70,7 @@ else
 }
 
 @code {
-	private ProductDetailsViewModel _productDetailsViewModel;
+	private ProductDetailsState _productDetailsState;
 
 	private ReviewViewModel _review = new ReviewViewModel();
 
@@ -78,15 +79,15 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		_productDetailsViewModel = await ProductDetailsService.GetProductDetailsViewModelAsync(int.Parse(ProductID));
+		_productDetailsState = await ProductDetailsService.GetProductDetailsViewModelAsync(int.Parse(ProductID));
 	}
 
 	private async void SubmitReview()
 	{
-		_review.Customer = _productDetailsViewModel.Customer;
-		_review.ProductID = _productDetailsViewModel.Product.ID;
+		_review.Customer = _productDetailsState.Customer;
+		_review.ProductID = _productDetailsState.Product.ID;
 		bool successful = await ProductDetailsService.SubmitReview(_review);
-		_productDetailsViewModel = await ProductDetailsService.GetProductDetailsViewModelAsync(int.Parse(ProductID));
+		_productDetailsState = await ProductDetailsService.GetProductDetailsViewModelAsync(int.Parse(ProductID));
 		_review = new ReviewViewModel();
 	}
 }

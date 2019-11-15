@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using DevOps.Products.Common.Repository;
 
 namespace DevOps.Products.Products.DAL
 {
-    public class Product
+    public class Product : Entity
     {
-        public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
@@ -13,7 +13,5 @@ namespace DevOps.Products.Products.DAL
 
         public int CategoryID { get; set; }
         public int BrandID { get; set; }
-
-        public bool IsActive { get; set; }
     }
 }
