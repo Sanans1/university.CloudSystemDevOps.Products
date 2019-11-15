@@ -1,3 +1,7 @@
+using DevOps.Products.Composer.API.Services.Interfaces;
+using DevOps.Products.Composer.API.Services.Interfaces.Facades;
+using DevOps.Products.Composer.API.Services.Mocks;
+using DevOps.Products.Composer.API.Services.Mocks.Facades;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +23,13 @@ namespace DevOps.Products.Composer.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            //Facades
+            services.AddSingleton<IProductFacadeService, ProductFacadeServiceMock>();
+            services.AddSingleton<IReviewFacadeService, ReviewFacadeServiceMock>();
+            services.AddSingleton<ICategoryFacadeService, CategoryFacadeServiceMock>();
+            services.AddSingleton<IBrandFacadeService, BrandFacadeServiceMock>();
+            services.AddSingleton<ICustomerFacadeService, CustomerFacadeServiceMock>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
