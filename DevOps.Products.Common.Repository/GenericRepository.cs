@@ -26,10 +26,8 @@ namespace DevOps.Products.Common.Repository
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<TDTO>> Get(
-            Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TDTO>, IOrderedQueryable<TDTO>> orderBy = null,
-            string includeProperties = "")
+        public async Task<IEnumerable<TDTO>> Get(Expression<Func<TEntity, bool>> filter = null,
+                                                 string includeProperties = "")
         {
             IQueryable<TEntity> entities = _dbSet;
 
@@ -47,11 +45,6 @@ namespace DevOps.Products.Common.Repository
             }
 
             IQueryable<TDTO> dtos = _mapper.ProjectTo<TDTO>(entities);
-
-            if (orderBy != null)
-            {
-                return await orderBy(dtos).ToListAsync();
-            }
 
             return await dtos.ToListAsync();
         }

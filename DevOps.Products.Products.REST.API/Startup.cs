@@ -31,6 +31,9 @@ namespace DevOps.Products.Products.REST.API
             services.AddDbContext<ProductContext>(options => options.UseInMemoryDatabase( "Products"));
 
             services.AddScoped<IGenericRepository<Product, ProductDTO>, GenericRepository<ProductContext, Product, ProductDTO>>();
+            services.AddScoped<IGenericRepository<Category, CategoryDTO>, GenericRepository<ProductContext, Category, CategoryDTO>>();
+            services.AddScoped<IGenericRepository<Brand, BrandDTO>, GenericRepository<ProductContext, Brand, BrandDTO>>();
+            services.AddScoped<IGenericRepository<PriceHistory, PriceHistoryDTO>, GenericRepository<ProductContext, PriceHistory, PriceHistoryDTO>>();
 
             services.AddSwaggerGen(options =>
             {

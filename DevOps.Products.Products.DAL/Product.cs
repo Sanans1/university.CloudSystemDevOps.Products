@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using DevOps.Products.Common.Repository;
 
@@ -12,6 +13,11 @@ namespace DevOps.Products.Products.DAL
         public int Quantity { get; set; }
 
         public int CategoryID { get; set; }
+        public Category Category { get; set; }
+
         public int BrandID { get; set; }
+        public Brand Brand { get; set; }
+
+        public List<PriceHistory> PriceHistories { get; set; }
     }
 }

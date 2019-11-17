@@ -1,4 +1,6 @@
-﻿namespace DevOps.Products.Products.REST.API.Models
+﻿using System.Collections.Generic;
+
+namespace DevOps.Products.Products.REST.API.Models
 {
     public class ProductDTO
     {
@@ -9,6 +11,11 @@
         public int Quantity { get; set; }
 
         public int CategoryID { get; set; }
+        public string CategoryName { get; set; }
+
         public int BrandID { get; set; }
+        public string BrandName { get; set; }
+
+        public List<PriceHistoryDTO> PriceHistories { get; set; }
     }
 }
