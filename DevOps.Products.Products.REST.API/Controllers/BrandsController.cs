@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using DevOps.Products.Brands.DAL;
-using DevOps.Products.Brands.REST.API.Models;
 using DevOps.Products.Common.Repository;
+using DevOps.Products.Products.DAL;
+using DevOps.Products.Products.REST.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
-namespace DevOps.Products.Brands.REST.API.Controllers
+namespace DevOps.Products.Products.REST.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

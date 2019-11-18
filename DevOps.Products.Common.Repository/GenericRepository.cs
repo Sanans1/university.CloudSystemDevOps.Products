@@ -51,19 +51,22 @@ namespace DevOps.Products.Common.Repository
 
         public async Task<TDTO> GetByID(int id)
         {
-            TEntity foundEntity = await _dbSet.Where(entity => entity.IsActive).SingleAsync(entity => entity.ID == id);
+            TEntity foundEntity = await _dbSet.FindAsync(id);
             return _mapper.Map<TDTO>(foundEntity);
         }
 
-        public async Task Create(TDTO dto)
+        public async Task<TDTO> Create(TDTO dto)
         {
             TEntity entity = _mapper.Map<TEntity>(dto);
 
+            entity.ID = null;
             entity.IsActive = true;
 
             await _dbSet.AddAsync(entity);
 
             await _context.SaveChangesAsync();
+
+            return _mapper.Map<TDTO>(entity);
         }
 
         public async Task Delete(int id)
@@ -72,27 +75,27 @@ namespace DevOps.Products.Common.Repository
 
             entityToDelete.IsActive = false;
 
-            _dbSet.Attach(entityToDelete);
-            _context.Entry(entityToDelete).State = EntityState.Modified;
+            _context.Update(entityToDelete);
 
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(TDTO dto)
+        public async Task Update(int id, TDTO dto)
         {
-            TEntity entityToUpdate = _mapper.Map<TEntity>(dto);
-            
-            if ((await _dbSet.FindAsync(entityToUpdate.ID)).IsActive == false) throw new DbUpdateConcurrencyException();
+            TEntity entityToUpdate = await _dbSet.FindAsync(id);
 
-            _dbSet.Attach(entityToUpdate);
-            _context.Entry(entityToUpdate).State = EntityState.Modified;
+            if (entityToUpdate.IsActive == false) throw new DbUpdateConcurrencyException();
+
+            _mapper.Map(dto, entityToUpdate);
+
+            _context.Update(entityToUpdate);
 
             await _context.SaveChangesAsync();
         }
 
         public async Task<bool> EntityExists(int id)
         {
-            return await _dbSet.AnyAsync(entity => entity.ID == id);
+            return await _dbSet.AsNoTracking().AnyAsync(entity => entity.ID == id);
         }
     }
 }

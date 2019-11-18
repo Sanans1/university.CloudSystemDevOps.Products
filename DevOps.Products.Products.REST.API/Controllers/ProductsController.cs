@@ -15,9 +15,6 @@ namespace DevOps.Products.Products.REST.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private const string MANDATORY_INCLUDE_PROPERTIES = "Category,Brand";
-        private const string PRICE_HISTORIES_INCLUDE_PROPERTIES = ",PriceHistories";
-
         private readonly IMapper _mapper;
         private readonly IGenericRepository<Product, ProductDTO> _productRepository;
         private readonly IGenericRepository<Category, CategoryDTO> _categoryRepository;
@@ -37,21 +34,13 @@ namespace DevOps.Products.Products.REST.API.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts(string searchString, int? categoryID, int? brandID, bool? includePriceHistories)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts(string searchString, int? categoryID, int? brandID)
         {
-            string includeProperties = MANDATORY_INCLUDE_PROPERTIES;
-
-            if (includePriceHistories.HasValue && includePriceHistories.Value)
-            {
-                includeProperties += PRICE_HISTORIES_INCLUDE_PROPERTIES;
-            }
-
             return Ok(await _productRepository.Get(filter: product => (string.IsNullOrWhiteSpace(searchString) || 
                                                                        product.Name.Contains(searchString) || 
                                                                        product.Description.Contains(searchString)) && 
                                                                       (!categoryID.HasValue || product.CategoryID == categoryID) && 
-                                                                      (!brandID.HasValue || product.BrandID == brandID), 
-                                                   includeProperties: includeProperties));
+                                                                      (!brandID.HasValue || product.BrandID == brandID)));
         }
 
         // GET: api/Products/5
@@ -85,10 +74,13 @@ namespace DevOps.Products.Products.REST.API.Controllers
 
                 if (product.Price != oldProduct.Price)
                 {
-                    await _priceHistoryRepository.Create(_mapper.Map(product, new PriceHistoryDTO()));
+                    await _priceHistoryRepository.Create(_mapper.Map(oldProduct, new PriceHistoryDTO()));
                 }
 
-                await _productRepository.Update(product);
+                product = await CreateAndSetCategory(product);
+                product = await CreateAndSetBrand(product);
+
+                await _productRepository.Update(id, product);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -109,15 +101,10 @@ namespace DevOps.Products.Products.REST.API.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> PostProduct(ProductDTO product)
         {
+            product = await CreateAndSetCategory(product);
+            product = await CreateAndSetBrand(product);
+
             await _productRepository.Create(product);
-
-            IEnumerable<CategoryDTO> categories = await _categoryRepository.Get(category => category.Name == product.CategoryName);
-
-            if (!categories.Any()) await _categoryRepository.Create(_mapper.Map(product, new CategoryDTO()));
-
-            IEnumerable<BrandDTO> brands = await _brandRepository.Get(brand => brand.Name == product.BrandName);
-
-            if (!brands.Any()) await _brandRepository.Create(_mapper.Map(product, new BrandDTO()));
 
             return CreatedAtAction("GetProduct", new { id = product.ID }, product);
         }
@@ -141,6 +128,40 @@ namespace DevOps.Products.Products.REST.API.Controllers
             }
 
             return NoContent();
+        }
+
+        private async Task<ProductDTO> CreateAndSetCategory(ProductDTO product)
+        {
+            IEnumerable<CategoryDTO> categories = await _categoryRepository.Get(category => category.Name == product.CategoryName);
+
+            if (categories.Any())
+            {
+                product.CategoryID = categories.First().ID;
+            }
+            else
+            {
+                CategoryDTO categoryDTO = await _categoryRepository.Create(_mapper.Map(product, new CategoryDTO()));
+                product.CategoryID = categoryDTO.ID;
+            }
+
+            return product;
+        }
+
+        private async Task<ProductDTO> CreateAndSetBrand(ProductDTO product)
+        {
+            IEnumerable<BrandDTO> brands = await _brandRepository.Get(brand => brand.Name == product.BrandName);
+
+            if (brands.Any())
+            {
+                product.BrandID = brands.First().ID;
+            }
+            else
+            {
+                BrandDTO brandDTO = await _brandRepository.Create(_mapper.Map(product, new BrandDTO()));
+                product.BrandID = brandDTO.ID;
+            }
+
+            return product;
         }
     }
 }

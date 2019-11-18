@@ -28,7 +28,9 @@ namespace DevOps.Products.Products.REST.API
 
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddDbContext<ProductContext>(options => options.UseInMemoryDatabase( "Products"));
+            services.AddDbContext<ProductContext>(options => options.UseLazyLoadingProxies()
+                                                                                .EnableSensitiveDataLogging()
+                                                                                .UseInMemoryDatabase( "Products"));
 
             services.AddScoped<IGenericRepository<Product, ProductDTO>, GenericRepository<ProductContext, Product, ProductDTO>>();
             services.AddScoped<IGenericRepository<Category, CategoryDTO>, GenericRepository<ProductContext, Category, CategoryDTO>>();

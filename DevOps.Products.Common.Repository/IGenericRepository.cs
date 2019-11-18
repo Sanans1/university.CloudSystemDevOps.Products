@@ -12,9 +12,9 @@ namespace DevOps.Products.Common.Repository
         Task<IEnumerable<TDTO>> Get(Expression<Func<TEntity, bool>> filter = null,
                                     string includeProperties = "");
         Task<TDTO> GetByID(int id);
-        Task Create(TDTO dto);
+        Task<TDTO> Create(TDTO dto);
         Task Delete(int id);
-        Task Update(TDTO dto);
+        Task Update(int id, TDTO dto);
         Task<bool> EntityExists(int id);
     }
 }

@@ -9,12 +9,26 @@ namespace DevOps.Products.Products.REST.API
     {
         public MappingProfile()
         {
-            CreateMap<Product, ProductDTO>().ReverseMap();
+            CreateMap<Product, ProductDTO>().ReverseMap().ForMember(destination => destination.Category, options => options.Ignore())
+                                                         .ForMember(destination => destination.Brand, options => options.Ignore())
+                                                         .ForMember(destination => destination.PriceHistories, options => options.Ignore());
+
             CreateMap<Category, CategoryDTO>().ReverseMap();
+
             CreateMap<Brand, BrandDTO>().ReverseMap();
-            CreateMap<PriceHistory, PriceHistoryDTO>().ReverseMap()
-                                                      .ForMember(destination => destination.DateArchived, 
-                                                                    options => options.MapFrom(source => DateTime.Now));
+             
+            CreateMap<PriceHistory, PriceHistoryDTO>().ReverseMap();
+
+            CreateMap<ProductDTO, CategoryDTO>().ForMember(destination => destination.ID, options => options.Ignore())
+                                                .ForMember(destination => destination.Name, options => options.MapFrom(source => source.CategoryName));
+
+            CreateMap<ProductDTO, BrandDTO>().ForMember(destination => destination.ID, options => options.Ignore())
+                                             .ForMember(destination => destination.Name, options => options.MapFrom(source => source.BrandName));
+
+            CreateMap<ProductDTO, PriceHistoryDTO>().ForMember(destination => destination.ID, options => options.Ignore())
+                                                    .ForMember(destination => destination.DateArchived, options => options.MapFrom(source => DateTime.Now))
+                                                    .ForMember(destination => destination.ProductID, options => options.MapFrom(source => source.ID));
+
         }
     }
 }

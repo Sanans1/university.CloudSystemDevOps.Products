@@ -6,7 +6,7 @@ namespace DevOps.Products.Common.Repository
 {
     public interface IEntity
     {
-        int ID { get; set; }
+        int? ID { get; set; }
         bool IsActive { get; set; }
     }
 }
