@@ -17,7 +17,7 @@ namespace DevOps.Products.Reviews.REST.API
             {
                 IServiceProvider services = scope.ServiceProvider;
                 ReviewContext context = services.GetRequiredService<ReviewContext>();
-                context.Database.Migrate();
+                //context.Database.Migrate();
             }
 
             host.Run();

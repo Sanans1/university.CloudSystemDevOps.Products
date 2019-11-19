@@ -38,7 +38,7 @@ namespace DevOps.Products.Website.Services.Implementations.Pages
 
             ProductViewModel productDetails = _mapper.Map<ProductViewModel>(await _productFacadeService.GetProduct(id));
 
-            IEnumerable<ReviewViewModel> reviews = _mapper.Map<IEnumerable<ReviewViewModel>>(await _reviewFacadeService.GetReviewCollection(id));
+            ICollection<ReviewViewModel> reviews = _mapper.Map<ICollection<ReviewViewModel>>(await _reviewFacadeService.GetReviewCollection(id));
 
             foreach (ReviewViewModel review in reviews)
             {
@@ -48,11 +48,11 @@ namespace DevOps.Products.Website.Services.Implementations.Pages
             return new ProductDetailsState(productDetails, reviews, customer);
         }
 
-        public async Task<bool> SubmitReview(ReviewViewModel review)
+        public async Task<ReviewViewModel> SubmitReview(ReviewViewModel review)
         {
             ReviewDTO reviewDTO = _mapper.Map<ReviewDTO>(review);
 
-            return await _reviewFacadeService.CreateReview(reviewDTO);
+            return _mapper.Map<ReviewViewModel>(await _reviewFacadeService.CreateReview(reviewDTO));
         }
 
         #endregion

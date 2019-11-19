@@ -6,7 +6,7 @@ namespace DevOps.Products.Website.States
 {
     public class ProductDetailsState
     {
-        public ProductDetailsState(ProductViewModel product, IEnumerable<ReviewViewModel> reviews, CustomerViewModel customer)
+        public ProductDetailsState(ProductViewModel product, ICollection<ReviewViewModel> reviews, CustomerViewModel customer)
         {
             Product = product;
             Reviews = reviews;
@@ -14,7 +14,7 @@ namespace DevOps.Products.Website.States
         }
 
         public ProductViewModel Product { get; set; }
-        public IEnumerable<ReviewViewModel> Reviews { get; set; }
+        public ICollection<ReviewViewModel> Reviews { get; set; }
         public CustomerViewModel Customer { get; set; }
     }
 }

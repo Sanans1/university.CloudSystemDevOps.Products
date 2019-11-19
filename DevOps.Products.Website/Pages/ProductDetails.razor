@@ -86,8 +86,7 @@ else
 	{
 		_review.Customer = _productDetailsState.Customer;
 		_review.ProductID = _productDetailsState.Product.ID;
-		bool successful = await ProductDetailsService.SubmitReview(_review);
-		_productDetailsState = await ProductDetailsService.GetProductDetailsViewModelAsync(int.Parse(ProductID));
+		_productDetailsState.Reviews.Add(await ProductDetailsService.SubmitReview(_review));
 		_review = new ReviewViewModel();
 	}
 }

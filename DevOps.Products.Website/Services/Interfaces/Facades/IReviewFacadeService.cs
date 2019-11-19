@@ -8,7 +8,7 @@ namespace DevOps.Products.Website.Services.Interfaces.Facades
     {
         Task<IEnumerable<ReviewDTO>> GetReviewCollection(int id);
 
-        Task<bool> CreateReview(ReviewDTO reviewDTO);
+        Task<ReviewDTO> CreateReview(ReviewDTO reviewDTO);
 
         Task DeleteReview(int id);
     }
