@@ -31,10 +31,5 @@ namespace DevOps.Products.Website.Services.Mocks.Facades
         {
             return _mockBrands;
         }
-
-        public async Task<BrandDTO> GetBrand(int id)
-        {
-            return _mockBrands.Single(brand => brand.ID == id);
-        }
     }
 }

@@ -104,9 +104,9 @@ namespace DevOps.Products.Products.REST.API.Controllers
             product = await CreateAndSetCategory(product);
             product = await CreateAndSetBrand(product);
 
-            await _productRepository.Create(product);
+            ProductDTO productCreated = await _productRepository.Create(product);
 
-            return CreatedAtAction("GetProduct", new { id = product.ID }, product);
+            return CreatedAtAction("GetProduct", new { id = productCreated.ID }, productCreated);
         }
 
         // DELETE: api/Products/5

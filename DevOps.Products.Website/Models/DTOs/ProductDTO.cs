@@ -1,4 +1,7 @@
-﻿namespace DevOps.Products.Website.Models.DTOs
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+
+namespace DevOps.Products.Website.Models.DTOs
 {
     public class ProductDTO
     {

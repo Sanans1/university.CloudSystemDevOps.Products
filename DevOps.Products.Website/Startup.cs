@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DevOps.Products.Website.Services.Implementations;
+using DevOps.Products.Website.Services.Implementations.Facades;
 using DevOps.Products.Website.Services.Implementations.Pages;
 using DevOps.Products.Website.Services.Interfaces;
 using DevOps.Products.Website.Services.Interfaces.Facades;
@@ -22,6 +23,12 @@ namespace DevOps.Products.Website
 {
     public class Startup
     {
+        private const bool SHOULD_MOCK_PRODUCT_FACADE = false;
+        private const bool SHOULD_MOCK_CATEGORY_FACADE = false;
+        private const bool SHOULD_MOCK_BRAND_FACADE = false;
+        private const bool SHOULD_MOCK_REVIEW_FACADE = true;
+        private const bool SHOULD_MOCK_CUSTOMER_FACADE = true;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -42,11 +49,30 @@ namespace DevOps.Products.Website
             services.AddScoped<IProductDetailsService, ProductDetailsService>();
 
             //Facades
-            services.AddSingleton<IProductFacadeService, ProductFacadeServiceMock>();
-            services.AddSingleton<IReviewFacadeService, ReviewFacadeServiceMock>();
-            services.AddSingleton<ICategoryFacadeService, CategoryFacadeServiceMock>();
-            services.AddSingleton<IBrandFacadeService, BrandFacadeServiceMock>();
-            services.AddSingleton<ICustomerFacadeService, CustomerFacadeServiceMock>();
+            if (SHOULD_MOCK_PRODUCT_FACADE) 
+                services.AddSingleton<IProductFacadeService, ProductFacadeServiceMock>(); 
+            else 
+                services.AddScoped<IProductFacadeService, ProductFacadeService>();
+
+            if (SHOULD_MOCK_CATEGORY_FACADE) 
+                services.AddSingleton<ICategoryFacadeService, CategoryFacadeServiceMock>();
+            else
+                services.AddScoped<ICategoryFacadeService, CategoryFacadeService>();
+
+            if (SHOULD_MOCK_BRAND_FACADE) 
+                services.AddSingleton<IBrandFacadeService, BrandFacadeServiceMock>();
+            else
+                services.AddScoped<IBrandFacadeService, BrandFacadeService>();
+
+            if (SHOULD_MOCK_REVIEW_FACADE) 
+                services.AddSingleton<IReviewFacadeService, ReviewFacadeServiceMock>();
+            else
+                services.AddScoped<IReviewFacadeService, ReviewFacadeService>();
+
+            if (SHOULD_MOCK_CUSTOMER_FACADE) 
+                services.AddSingleton<ICustomerFacadeService, CustomerFacadeServiceMock>();
+            else
+                services.AddScoped<ICustomerFacadeService, CustomerFacadeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

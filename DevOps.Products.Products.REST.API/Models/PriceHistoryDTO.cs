@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace DevOps.Products.Products.REST.API.Models
 {

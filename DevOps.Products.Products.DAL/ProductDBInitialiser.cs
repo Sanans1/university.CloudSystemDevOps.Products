@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace DevOps.Products.Products.DAL
 {
@@ -20,7 +20,7 @@ namespace DevOps.Products.Products.DAL
             List<Category> categories = new List<Category>
             {
                 new Category { Name = "Covers", IsActive = true },
-                new Category { Name = "Case", IsActive = false },
+                new Category { Name = "Case", IsActive = true },
                 new Category { Name = "Accessories", IsActive = true },
                 new Category { Name = "Screen Protectors", IsActive = true }
             };
@@ -29,7 +29,7 @@ namespace DevOps.Products.Products.DAL
             List<Brand> brands = new List<Brand>
             {
                 new Brand { Name = "Soggy Sponge", IsActive = true },
-                new Brand { Name = "Damp Squib", IsActive = false },
+                new Brand { Name = "Damp Squib", IsActive = true },
                 new Brand { Name = "iStuff-R-Us", IsActive = true }
             };
             brands.ForEach(b => context.Brands.Add(b));
@@ -43,9 +43,9 @@ namespace DevOps.Products.Products.DAL
                 new Product { IsActive = true, Brand = brands[2], Category = categories[0], Description = "Lamely adapted used and dirty teatowel.  Guaranteed fewer than two holes.", Name = "Cloth Cover", Price = 3.01m, Quantity = 6 },
                 new Product { IsActive = true, Brand = brands[0], Category = categories[1], Description = "Especially toughen and harden sponge entirely encases your device to prevent any interaction.", Name = "Harden Sponge Case", Price = 9.99m, Quantity = 2 },
                 new Product { IsActive = true, Brand = brands[0], Category = categories[1], Description = "Place your device within the water-tight container, fill with water and enjoy the cushioned protection from bumps and bangs.", Name = "Water Bath Case", Price = 20.0m, Quantity = 3 },
-                new Product { IsActive = false, Brand = brands[0], Category = categories[2], Description = "Keep you smartphone handsfree with this large assembly that attaches to your rear window wiper (Hatchbacks only).", Name = "Smartphone Car Holder", Price = 110.01m, Quantity = 8 },
+                new Product { IsActive = true, Brand = brands[0], Category = categories[2], Description = "Keep you smartphone handsfree with this large assembly that attaches to your rear window wiper (Hatchbacks only).", Name = "Smartphone Car Holder", Price = 110.01m, Quantity = 8 },
                 new Product { IsActive = true, Brand = brands[0], Category = categories[2], Description = "Keep your device on your arm with this general purpose sticky tape.", Name = "Sticky Tape Sport Armband", Price = 2.99m, Quantity = 23 },
-                new Product { IsActive = true, Brand = brands[1], Category = categories[2], Description = "Stengthen HB pencils guaranteed to leave a mark.", Name = "Real Pencil Stylus", Price = 0.99m, Quantity = 5 },
+                new Product { IsActive = false, Brand = brands[1], Category = categories[2], Description = "Stengthen HB pencils guaranteed to leave a mark.", Name = "Real Pencil Stylus", Price = 0.99m, Quantity = 5 },
                 new Product { IsActive = true, Brand = brands[0], Category = categories[3], Description = "Coat your mobile device screen in a scratch resistant, opaque film.", Name = "Spray Paint Screen Protector", Price = 4.99m, Quantity = 1 },
                 new Product { IsActive = true, Brand = brands[2], Category = categories[3], Description = "For his or her sensory pleasure. Fits few known smartphones.", Name = "Rippled Screen Protector", Price = 7.99m, Quantity = 5 },
                 new Product { IsActive = true, Brand = brands[2], Category = categories[3], Description = "For an odour than lingers on your device.", Name = "Fish Scented Screen Protector", Price = 2.88m, Quantity = 0 },

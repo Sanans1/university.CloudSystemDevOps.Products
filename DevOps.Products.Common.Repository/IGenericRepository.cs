@@ -9,7 +9,7 @@ namespace DevOps.Products.Common.Repository
     public interface IGenericRepository<TEntity, TDTO> where TEntity : class 
                                                        where TDTO : class
     {
-        Task<IEnumerable<TDTO>> Get(Expression<Func<TEntity, bool>> filter = null,
+        Task<ICollection<TDTO>> Get(Expression<Func<TEntity, bool>> filter = null,
                                     string includeProperties = "");
         Task<TDTO> GetByID(int id);
         Task<TDTO> Create(TDTO dto);

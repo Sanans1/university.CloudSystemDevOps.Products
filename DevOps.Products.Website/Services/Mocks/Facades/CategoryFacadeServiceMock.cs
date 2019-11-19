@@ -31,10 +31,5 @@ namespace DevOps.Products.Website.Services.Mocks.Facades
         {
             return _mockCategories;
         }
-
-        public async Task<CategoryDTO> GetCategory(int id)
-        {
-            return _mockCategories.Single(category => category.ID == id);
-        }
     }
 }

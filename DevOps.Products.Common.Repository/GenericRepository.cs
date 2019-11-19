@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DevOps.Products.Common.Repository
 {
@@ -26,7 +27,7 @@ namespace DevOps.Products.Common.Repository
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<TDTO>> Get(Expression<Func<TEntity, bool>> filter = null,
+        public async Task<ICollection<TDTO>> Get(Expression<Func<TEntity, bool>> filter = null,
                                                  string includeProperties = "")
         {
             IQueryable<TEntity> entities = _dbSet;
@@ -65,6 +66,13 @@ namespace DevOps.Products.Common.Repository
             await _dbSet.AddAsync(entity);
 
             await _context.SaveChangesAsync();
+
+            IEnumerable<NavigationEntry> navigationEntries = _context.Entry(entity).Navigations;
+
+            foreach (NavigationEntry navigationEntry in navigationEntries)
+            {
+                if (!navigationEntry.IsLoaded) await navigationEntry.LoadAsync();
+            }
 
             return _mapper.Map<TDTO>(entity);
         }

@@ -17,14 +17,14 @@ namespace DevOps.Products.Composer.API.Controllers
         private readonly IProductFacadeService _productFacadeService;
 
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts(string searchString, int? categoryID, int? brandID)
-        {
-            return Ok(await _productFacadeService.g(product => (string.IsNullOrWhiteSpace(searchString) ||
-                                                               product.Name.Contains(searchString) ||
-                                                               product.Description.Contains(searchString)) &&
-                                                              (!categoryID.HasValue || product.CategoryID == categoryID) &&
-                                                              (!brandID.HasValue || product.BrandID == brandID)));
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts(string searchString, int? categoryID, int? brandID)
+        //{
+        //    return Ok(await _productFacadeService.(product => (string.IsNullOrWhiteSpace(searchString) ||
+        //                                                       product.Name.Contains(searchString) ||
+        //                                                       product.Description.Contains(searchString)) &&
+        //                                                      (!categoryID.HasValue || product.CategoryID == categoryID) &&
+        //                                                      (!brandID.HasValue || product.BrandID == brandID)));
+        //}
     }
 }

@@ -56,7 +56,7 @@ namespace DevOps.Products.Reviews.REST.API.Controllers
 
             try
             {
-                await _reviewRepository.Update(review);
+                await _reviewRepository.Update(id, review);
             }
             catch (DbUpdateConcurrencyException)
             {
