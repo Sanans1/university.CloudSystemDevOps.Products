@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOps.Products.Common.Repo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOps.Products.Reviews.REST.API", "DevOps.Products.Reviews.REST.API\DevOps.Products.Reviews.REST.API.csproj", "{D456010C-5A73-4AA7-A784-F992EBBF568A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOps.Products.Composer.API", "DevOps.Products.Composer.API\DevOps.Products.Composer.API.csproj", "{50AB93A3-F2CC-43F8-ACCB-C9E5EE626DCC}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOps.Products.Reviews.DAL", "DevOps.Products.Reviews.DAL\DevOps.Products.Reviews.DAL.csproj", "{D2C18980-850F-4DE6-8728-234848971839}"
 EndProject
 Global
@@ -43,10 +41,6 @@ Global
 		{D456010C-5A73-4AA7-A784-F992EBBF568A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D456010C-5A73-4AA7-A784-F992EBBF568A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D456010C-5A73-4AA7-A784-F992EBBF568A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{50AB93A3-F2CC-43F8-ACCB-C9E5EE626DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50AB93A3-F2CC-43F8-ACCB-C9E5EE626DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50AB93A3-F2CC-43F8-ACCB-C9E5EE626DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50AB93A3-F2CC-43F8-ACCB-C9E5EE626DCC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D2C18980-850F-4DE6-8728-234848971839}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D2C18980-850F-4DE6-8728-234848971839}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2C18980-850F-4DE6-8728-234848971839}.Release|Any CPU.ActiveCfg = Release|Any CPU
