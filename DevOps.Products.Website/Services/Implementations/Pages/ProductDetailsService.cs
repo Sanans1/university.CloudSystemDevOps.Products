@@ -32,10 +32,8 @@ namespace DevOps.Products.Website.Services.Implementations.Pages
 
         #region methods
 
-        public async Task<ProductDetailsState> GetProductDetailsViewModelAsync(int id)//TODO extract this out into maybe two microservices, one for constructing products and another for reviews?
+        public async Task<ProductDetailsState> GetProductDetailsViewModelAsync(int id)
         {
-            CustomerViewModel customer = _mapper.Map<CustomerViewModel>(await _customerFacadeService.GetCurrentCustomer());
-
             ProductViewModel productDetails = _mapper.Map<ProductViewModel>(await _productFacadeService.GetProduct(id));
 
             ICollection<ReviewViewModel> reviews = _mapper.Map<ICollection<ReviewViewModel>>(await _reviewFacadeService.GetReviewCollection(id));
@@ -45,6 +43,8 @@ namespace DevOps.Products.Website.Services.Implementations.Pages
                 review.Customer = _mapper.Map<CustomerViewModel>(await _customerFacadeService.GetCustomer(review.Customer.ID));
             }
 
+            CustomerViewModel customer = _mapper.Map<CustomerViewModel>(await _customerFacadeService.GetCurrentCustomer());
+
             return new ProductDetailsState(productDetails, reviews, customer);
         }
 
@@ -52,7 +52,9 @@ namespace DevOps.Products.Website.Services.Implementations.Pages
         {
             ReviewDTO reviewDTO = _mapper.Map<ReviewDTO>(review);
 
-            return _mapper.Map<ReviewViewModel>(await _reviewFacadeService.CreateReview(reviewDTO));
+            await _reviewFacadeService.CreateReview(reviewDTO);
+
+            return review;
         }
 
         #endregion

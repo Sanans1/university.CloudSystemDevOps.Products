@@ -35,7 +35,7 @@ namespace DevOps.Products.Website.Services.Mocks.Facades
 
         public async Task<CustomerDTO> GetCurrentCustomer()
         {
-            return _mockCustomers.ElementAt(0);
+            return _mockCustomers.First();
         }
 
         public async Task<CustomerDTO> GetCustomer(int id)

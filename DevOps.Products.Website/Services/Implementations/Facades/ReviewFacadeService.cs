@@ -20,21 +20,14 @@ namespace DevOps.Products.Website.Services.Implementations.Facades
 
             HttpResponseMessage response = await url.GetAsync();
 
-                var reviews = await response.Content.ReadAsAsync<IEnumerable<ReviewDTO>>();
-
-                reviews = null;
-
-
-            return reviews;
+            return await response.Content.ReadAsAsync<IEnumerable<ReviewDTO>>();
         }
 
-        public async Task<ReviewDTO> CreateReview(ReviewDTO reviewDTO)
+        public async Task<bool> CreateReview(ReviewDTO reviewDTO)
         {
             HttpResponseMessage response = await API_URL.PostJsonAsync(reviewDTO);
 
-            ReviewDTO review = await response.Content.ReadAsAsync<ReviewDTO>();
-
-            return review;
+            return response.IsSuccessStatusCode;
         }
 
         public async Task DeleteReview(int id)

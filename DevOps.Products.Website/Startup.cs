@@ -26,7 +26,7 @@ namespace DevOps.Products.Website
         private const bool SHOULD_MOCK_PRODUCT_FACADE = false;
         private const bool SHOULD_MOCK_CATEGORY_FACADE = false;
         private const bool SHOULD_MOCK_BRAND_FACADE = false;
-        private const bool SHOULD_MOCK_REVIEW_FACADE = true;
+        private const bool SHOULD_MOCK_REVIEW_FACADE = false;
         private const bool SHOULD_MOCK_CUSTOMER_FACADE = true;
 
         public Startup(IConfiguration configuration)

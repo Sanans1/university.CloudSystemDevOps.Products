@@ -88,6 +88,7 @@ else
 		_review.ProductID = _productDetailsState.Product.ID;
 		_productDetailsState.Reviews.Add(await ProductDetailsService.SubmitReview(_review));
 		_review = new ReviewViewModel();
+		this.StateHasChanged();
 	}
 }
 
