@@ -59,20 +59,19 @@ else
 			</tbody>
 		</table>
 	}
-	<EditForm Model="@_review" OnValidSubmit="@SubmitReview">
+
+	<EditForm Model="@_productDetailsState.ReviewForm" OnValidSubmit="@SubmitReview">
 		<DataAnnotationsValidator/>
 		<ValidationSummary/>
 
-		<InputNumber @bind-Value="_review.Rating" placeholder="Add a rating..."/>
-		<InputText @bind-Value="_review.Text" placeholder="Write a review..."/>
+		<InputNumber @bind-Value="_productDetailsState.ReviewForm.Rating" placeholder="Add a rating..."/>
+		<InputText @bind-Value="_productDetailsState.ReviewForm.Text" placeholder="Write a review..."/>
 		<button type="submit">Submit</button>
 	</EditForm>
 }
 
 @code {
 	private ProductDetailsState _productDetailsState;
-
-	private ReviewViewModel _review = new ReviewViewModel();
 
 	[Parameter]
 	public string ProductID { get; set; }
@@ -84,10 +83,9 @@ else
 
 	private async void SubmitReview()
 	{
-		_review.Customer = _productDetailsState.Customer;
-		_review.ProductID = _productDetailsState.Product.ID;
-		_productDetailsState.Reviews.Add(await ProductDetailsService.SubmitReview(_review));
-		_review = new ReviewViewModel();
+		_productDetailsState.Reviews.Add(await ProductDetailsService.SubmitReview(_productDetailsState.ReviewForm));
+		_productDetailsState.ReviewForm.Rating = 0;
+		_productDetailsState.ReviewForm.Text = null;
 		this.StateHasChanged();
 	}
 }
