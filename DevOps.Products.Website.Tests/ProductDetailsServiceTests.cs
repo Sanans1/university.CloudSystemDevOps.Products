@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DevOps.Products.Website.Models.DTOs;
 using DevOps.Products.Website.Models.ViewModels;
+using DevOps.Products.Website.Models.ViewModels.ProductDetails;
 using DevOps.Products.Website.Services.Implementations.Facades;
 using DevOps.Products.Website.Services.Implementations.Pages;
 using DevOps.Products.Website.Services.Interfaces.Facades;
 using DevOps.Products.Website.Services.Mocks.Facades;
 using DevOps.Products.Website.States;
 using Microsoft.AspNetCore.Razor.Language;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 
@@ -44,16 +46,64 @@ namespace DevOps.Products.Website.Tests
         }
 
         [Test]
-        public async Task ProductDetailsService_CorrectlyPopulatesState([Range(1,4,1)]int productID)
+        public async Task ProductDetailsService_CorrectlyPopulatesState()
         {
-            ProductDetailsState productDetailsState = await _productDetailsService.GetProductDetailsViewModelAsync(productID);
-
-            Assert.Multiple(() =>
+            ProductViewModel expectedProductViewModel = new ProductViewModel
             {
-                Assert.NotNull(productDetailsState.Product);
-                Assert.NotNull(productDetailsState.Customer);
-                Assert.NotNull(productDetailsState.ReviewForm);
-            });
+                ID = 1,
+                Name = "Banana",
+                Description = "Amazingly Tasty Bananas!",
+                Price = 1.50m,
+                InStock = true,
+                CategoryID = 1,
+                CategoryName = "Fruits",
+                BrandID = 1,
+                BrandName = "Pablo's Farms"
+            };
+
+            CustomerViewModel expectedCustomerViewModel = new CustomerViewModel
+            {
+                ID = 1,
+                Name = "Lewis"
+            };
+
+            ICollection<ReviewViewModel> expectedReviews = new List<ReviewViewModel>
+            {
+                new ReviewViewModel()
+                {
+                    ID = 1,
+                    Rating = 3,
+                    Text = "It was alright...",
+                    ProductID = 1,
+                    Customer = new CustomerViewModel
+                    {
+                        ID = 2,
+                        Name = "Sarah"
+                    }
+                },
+                new ReviewViewModel()
+                {
+                    ID = 2,
+                    Rating = 5,
+                    Text = "I loved it!",
+                    ProductID = 1,
+                    Customer = new CustomerViewModel
+                    {
+                        ID = 3,
+                        Name = "Sven"
+                    }
+                }
+            };
+
+            ProductDetailsState expectedProductDetailsState = new ProductDetailsState(expectedProductViewModel, expectedReviews, expectedCustomerViewModel);
+
+            string expectedSerializedProductDetailsState = JsonConvert.SerializeObject(expectedProductDetailsState);
+
+            ProductDetailsState actualProductDetailsState = await _productDetailsService.GetProductDetailsViewModelAsync(1);
+
+            string actualSerializedProductDetailsState = JsonConvert.SerializeObject(actualProductDetailsState);
+
+            Assert.AreEqual(expectedSerializedProductDetailsState,actualSerializedProductDetailsState);
         }
 
         [Test]
