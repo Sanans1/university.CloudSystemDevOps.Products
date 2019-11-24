@@ -2,9 +2,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DevOps.Products.Website.Models.DTOs;
 using DevOps.Products.Website.Models.ViewModels;
+using DevOps.Products.Website.Services.Fakes.Facades;
 using DevOps.Products.Website.Services.Implementations.Pages;
 using DevOps.Products.Website.Services.Interfaces.Pages;
-using DevOps.Products.Website.Services.Mocks.Facades;
 using DevOps.Products.Website.States;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
@@ -34,11 +34,11 @@ namespace DevOps.Products.Website.Tests
         [SetUp]
         public void Setup()
         {
-            _productListService = new ProductListService(_mapper, new ProductFacadeServiceMock(), new CategoryFacadeServiceMock(), new BrandFacadeServiceMock());
+            _productListService = new ProductListService(_mapper, new FakeProductFacadeService(), new FakeCategoryFacadeService(), new FakeBrandFacadeService());
         }
 
         [Test]
-        public async Task ProductListService_CorrectlyPopulatesState()
+        public async Task GetProductListViewModelsAsync_GetsValuesFromFacadesAndConstructsState_CorrectlyPopulatesState()
         {
             ProductListState productListState = await _productListService.GetProductListViewModelsAsync();
 

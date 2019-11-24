@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using DevOps.Products.Website.Services.Fakes.Facades;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -16,8 +17,8 @@ using DevOps.Products.Website.Services.Implementations.Pages;
 using DevOps.Products.Website.Services.Interfaces;
 using DevOps.Products.Website.Services.Interfaces.Facades;
 using DevOps.Products.Website.Services.Interfaces.Pages;
-using DevOps.Products.Website.Services.Mocks;
-using DevOps.Products.Website.Services.Mocks.Facades;
+using DevOps.Products.Website.Services.Fakes;
+using Flurl.Http;
 
 namespace DevOps.Products.Website
 {
@@ -42,7 +43,10 @@ namespace DevOps.Products.Website
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            //NuGet Package Services
             services.AddAutoMapper(typeof(Startup));
+            FlurlHttp.Configure(settings => settings.HttpClientFactory = new PollyHttpClientFactory());
 
             //Pages
             services.AddScoped<IProductListService, ProductListService>();
@@ -50,27 +54,27 @@ namespace DevOps.Products.Website
 
             //Facades
             if (SHOULD_MOCK_PRODUCT_FACADE) 
-                services.AddSingleton<IProductFacadeService, ProductFacadeServiceMock>(); 
+                services.AddSingleton<IProductFacadeService, FakeProductFacadeService>(); 
             else 
                 services.AddScoped<IProductFacadeService, ProductFacadeService>();
 
             if (SHOULD_MOCK_CATEGORY_FACADE) 
-                services.AddSingleton<ICategoryFacadeService, CategoryFacadeServiceMock>();
+                services.AddSingleton<ICategoryFacadeService, FakeCategoryFacadeService>();
             else
                 services.AddScoped<ICategoryFacadeService, CategoryFacadeService>();
 
             if (SHOULD_MOCK_BRAND_FACADE) 
-                services.AddSingleton<IBrandFacadeService, BrandFacadeServiceMock>();
+                services.AddSingleton<IBrandFacadeService, FakeBrandFacadeService>();
             else
                 services.AddScoped<IBrandFacadeService, BrandFacadeService>();
 
             if (SHOULD_MOCK_REVIEW_FACADE) 
-                services.AddSingleton<IReviewFacadeService, ReviewFacadeServiceMock>();
+                services.AddSingleton<IReviewFacadeService, FakeReviewFacadeService>();
             else
                 services.AddScoped<IReviewFacadeService, ReviewFacadeService>();
 
             if (SHOULD_MOCK_CUSTOMER_FACADE) 
-                services.AddSingleton<ICustomerFacadeService, CustomerFacadeServiceMock>();
+                services.AddSingleton<ICustomerFacadeService, FakeCustomerFacadeService>();
             else
                 services.AddScoped<ICustomerFacadeService, CustomerFacadeService>();
         }

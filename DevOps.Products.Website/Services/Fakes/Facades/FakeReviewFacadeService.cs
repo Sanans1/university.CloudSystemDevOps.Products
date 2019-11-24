@@ -2,17 +2,16 @@
 using System.Linq;
 using System.Threading.Tasks;
 using DevOps.Products.Website.Models.DTOs;
-using DevOps.Products.Website.Services.Interfaces;
 using DevOps.Products.Website.Services.Interfaces.Facades;
 
-namespace DevOps.Products.Website.Services.Mocks.Facades
+namespace DevOps.Products.Website.Services.Fakes.Facades
 {
-    public class ReviewFacadeServiceMock : IReviewFacadeService
+    public class FakeReviewFacadeService : IReviewFacadeService
     {
 
         private readonly ICollection<ReviewDTO> _mockReviews;
 
-        public ReviewFacadeServiceMock()
+        public FakeReviewFacadeService()
         {
             _mockReviews = new List<ReviewDTO>
             {

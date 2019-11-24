@@ -6,10 +6,10 @@ using AutoMapper;
 using DevOps.Products.Website.Models.DTOs;
 using DevOps.Products.Website.Models.ViewModels;
 using DevOps.Products.Website.Models.ViewModels.ProductDetails;
+using DevOps.Products.Website.Services.Fakes.Facades;
 using DevOps.Products.Website.Services.Implementations.Facades;
 using DevOps.Products.Website.Services.Implementations.Pages;
 using DevOps.Products.Website.Services.Interfaces.Facades;
-using DevOps.Products.Website.Services.Mocks.Facades;
 using DevOps.Products.Website.States;
 using Microsoft.AspNetCore.Razor.Language;
 using Newtonsoft.Json;
@@ -32,7 +32,7 @@ namespace DevOps.Products.Website.Tests
                 configuration.CreateMap<CustomerDTO, CustomerViewModel>().ReverseMap();
                 configuration.CreateMap<ReviewDTO, ReviewViewModel>().ForPath(destination => destination.Customer.ID, options => options.MapFrom(source => source.CustomerID))
                     .ReverseMap();
-                configuration.CreateMap<ProductDTO, Models.ViewModels.ProductDetails.ProductViewModel>().ForMember(destination => destination.InStock, options => options.MapFrom(source => source.Quantity > 0))
+                configuration.CreateMap<ProductDTO, ProductViewModel>().ForMember(destination => destination.InStock, options => options.MapFrom(source => source.Quantity > 0))
                     .ReverseMap();
             });
 
@@ -42,11 +42,11 @@ namespace DevOps.Products.Website.Tests
         [SetUp]
         public void Setup()
         {
-            _productDetailsService = new ProductDetailsService(_mapper, new ProductFacadeServiceMock(), new ReviewFacadeServiceMock(), new CustomerFacadeServiceMock());
+            _productDetailsService = new ProductDetailsService(_mapper, new FakeProductFacadeService(), new FakeReviewFacadeService(), new FakeCustomerFacadeService());
         }
 
         [Test]
-        public async Task ProductDetailsService_CorrectlyPopulatesState()
+        public async Task GetProductDetailsViewModelAsync_GetsValuesFromFacadesAndConstructsState_CorrectlyPopulatesState()
         {
             ProductViewModel expectedProductViewModel = new ProductViewModel
             {
@@ -107,7 +107,7 @@ namespace DevOps.Products.Website.Tests
         }
 
         [Test]
-        public async Task ProductDetailsService_SuccessfullySubmitsReview()
+        public async Task SubmitReview_SubmitsValidReview_SuccessfullySubmitsReview()
         {
             CustomerViewModel customer = new CustomerViewModel
             {

@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using DevOps.Products.Website.Models.DTOs;
 using DevOps.Products.Website.Services.Interfaces.Facades;
 
-namespace DevOps.Products.Website.Services.Mocks.Facades
+namespace DevOps.Products.Website.Services.Fakes.Facades
 {
-    public class CategoryFacadeServiceMock : ICategoryFacadeService
+    public class FakeCategoryFacadeService : ICategoryFacadeService
     {
         private readonly IEnumerable<CategoryDTO> _mockCategories;
 
-        public CategoryFacadeServiceMock()
+        public FakeCategoryFacadeService()
         {
             _mockCategories = new List<CategoryDTO>
             {

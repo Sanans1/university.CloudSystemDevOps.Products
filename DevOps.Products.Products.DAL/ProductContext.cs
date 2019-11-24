@@ -46,7 +46,29 @@ namespace DevOps.Products.Products.DAL
 
                 productEntities.HasMany(product => product.PriceHistories)
                                .WithOne()
-                               .HasForeignKey(x => x.ProductID);
+                               .HasForeignKey(priceHistory => priceHistory.ProductID);
+            });
+
+            modelBuilder.Entity<Category>(categoryEntities =>
+            {
+                categoryEntities.HasKey(category => category.ID);
+                categoryEntities.Property(category => category.ID).ValueGeneratedOnAdd();
+                categoryEntities.Property(category => category.Name).IsRequired();
+            });
+
+            modelBuilder.Entity<Brand>(brandEntities =>
+            {
+                brandEntities.HasKey(brand => brand.ID);
+                brandEntities.Property(brand => brand.ID).ValueGeneratedOnAdd();
+                brandEntities.Property(brand => brand.Name).IsRequired();
+            });
+
+            modelBuilder.Entity<PriceHistory>(priceHistoryEntities =>
+            {
+                priceHistoryEntities.HasKey(priceHistory => priceHistory.ID);
+                priceHistoryEntities.Property(priceHistory => priceHistory.ID).ValueGeneratedOnAdd();
+                priceHistoryEntities.Property(priceHistory => priceHistory.Price).IsRequired();
+                priceHistoryEntities.Property(priceHistory => priceHistory.DateArchived).IsRequired();
             });
         }
     }

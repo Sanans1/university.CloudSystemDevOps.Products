@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using DevOps.Products.Website.Models.DTOs;
 using DevOps.Products.Website.Services.Interfaces.Facades;
 
-namespace DevOps.Products.Website.Services.Mocks.Facades
+namespace DevOps.Products.Website.Services.Fakes.Facades
 {
-    public class ProductFacadeServiceMock : IProductFacadeService
+    public class FakeProductFacadeService : IProductFacadeService
     {
 
         #region fields
@@ -18,7 +18,7 @@ namespace DevOps.Products.Website.Services.Mocks.Facades
 
         #endregion
 
-        public ProductFacadeServiceMock()
+        public FakeProductFacadeService()
         {
             _mockCategories = new List<CategoryDTO>
             {
