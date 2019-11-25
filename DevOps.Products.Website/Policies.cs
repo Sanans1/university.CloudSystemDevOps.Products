@@ -14,10 +14,7 @@ namespace DevOps.Products.Website
     {
         private static AsyncTimeoutPolicy<HttpResponseMessage> TimeoutPolicy
         {
-            get
-            {
-                return Policy.TimeoutAsync<HttpResponseMessage>(2, TimeoutStrategy.Pessimistic)
-            }
+            get { return Policy.TimeoutAsync<HttpResponseMessage>(2, TimeoutStrategy.Pessimistic); }
         }
 
         private static AsyncRetryPolicy<HttpResponseMessage> RetryPolicy

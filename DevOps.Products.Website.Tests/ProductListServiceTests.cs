@@ -38,7 +38,7 @@ namespace DevOps.Products.Website.Tests
         }
 
         [Test]
-        public async Task GetProductListViewModelsAsync_GetsValuesFromFacadesAndConstructsState_CorrectlyPopulatesState()
+        public async Task GetProductListViewModelsAsync_GetsValuesFromFacadesAndConstructsState_Succeeds()
         {
             ProductListState productListState = await _productListService.GetProductListViewModelsAsync();
 

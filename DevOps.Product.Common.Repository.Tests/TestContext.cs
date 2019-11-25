@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 
-namespace DevOps.Products.Reviews.DAL
+namespace DevOps.Product.Common.Repository.Tests
 {
-    public class ReviewContext : DbContext
+    public class TestContext : DbContext
     {
-        public DbSet<Review> Reviews { get; set; }
+        public DbSet<TestEntity> TestEntities { get; set; }
 
-        public ReviewContext()
-        {
-        }
+        public TestContext() 
+        { }
 
-        public ReviewContext(DbContextOptions<ReviewContext> options) : base(options)
-        {
-        }
+        public TestContext(DbContextOptions<TestContext> options) : base(options)
+        { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -26,11 +24,10 @@ namespace DevOps.Products.Reviews.DAL
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Review>().HasKey(x => x.ID);
-            modelBuilder.Entity<Review>(x =>
+            modelBuilder.Entity<TestEntity>().HasKey(x => x.ID);
+            modelBuilder.Entity<TestEntity>(x =>
             {
                 x.Property(y => y.ID).ValueGeneratedOnAdd();
-                x.Property(y => y.Rating).IsRequired();
                 x.Property(y => y.Text).IsRequired();
             });
         }

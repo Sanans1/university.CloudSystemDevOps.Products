@@ -46,7 +46,7 @@ namespace DevOps.Products.Website.Tests
         }
 
         [Test]
-        public async Task GetProductDetailsViewModelAsync_GetsValuesFromFacadesAndConstructsState_CorrectlyPopulatesState()
+        public async Task GetProductDetailsViewModelAsync_GetsValuesFromFacadesAndConstructsState_Succeeds()
         {
             ProductViewModel expectedProductViewModel = new ProductViewModel
             {
@@ -107,7 +107,7 @@ namespace DevOps.Products.Website.Tests
         }
 
         [Test]
-        public async Task SubmitReview_SubmitsValidReview_SuccessfullySubmitsReview()
+        public async Task SubmitReview_SubmitsValidReview_Succeeds()
         {
             CustomerViewModel customer = new CustomerViewModel
             {
