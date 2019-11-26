@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -56,8 +58,10 @@ namespace DevOps.Products.Common.Repository
             return _mapper.Map<TDTO>(foundEntity);
         }
 
-        public async Task<TDTO> Create(TDTO dto)
+        public async Task<TDTO> Create([NotNull]TDTO dto)
         {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
             TEntity entity = _mapper.Map<TEntity>(dto);
 
             entity.ID = null;
@@ -81,6 +85,8 @@ namespace DevOps.Products.Common.Repository
         {
             TEntity entityToDelete = await _dbSet.FindAsync(id);
 
+            if (entityToDelete == null) throw new ArgumentException(nameof(id));
+
             entityToDelete.IsActive = false;
 
             _context.Update(entityToDelete);
@@ -92,7 +98,8 @@ namespace DevOps.Products.Common.Repository
         {
             TEntity entityToUpdate = await _dbSet.FindAsync(id);
 
-            if (entityToUpdate.IsActive == false) throw new DbUpdateConcurrencyException();
+            if (entityToUpdate == null) throw new ArgumentException(nameof(id));
+            if (entityToUpdate.IsActive == false) throw new DbUpdateException();
 
             _mapper.Map(dto, entityToUpdate);
 

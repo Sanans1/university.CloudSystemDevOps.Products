@@ -62,17 +62,42 @@ namespace DevOps.Product.Common.Repository.Tests
         }
 
         [Test]
-        public async Task GetByID_GetsEntityFromDatabaseAndConvertsToDTO_Succeeds([Values(1,2,3)] int id)
+        public async Task Get_GetsActiveEntitiesFromDatabaseWithFilterAndConvertsToCollectionOfDTOs_Succeeds()
         {
-            TestDTO expectedDTO = new TestDTO() { ID = id, Text = $"Text for entity {id}." };
+            const string expectedString = "1";
+
+            IEnumerable<TestDTO> actualDTOs = await _testRepository.Get(entity => entity.Text.Contains(expectedString));
+
+            foreach (TestDTO actualDTO in actualDTOs)
+            {
+                Assert.IsTrue(actualDTO.Text.Contains(expectedString));
+            }
+        }
+
+        [Test]
+        public async Task GetByID_GetsEntityFromDatabaseAndConvertsToDTO_Succeeds()
+        {
+            const int entityToGetID = 1;
+
+            TestDTO expectedDTO = new TestDTO() { ID = entityToGetID, Text = "Text for entity 1." };
 
             string expectedSerializedDTO = JsonConvert.SerializeObject(expectedDTO);
             
-            TestDTO actualDTO = await _testRepository.GetByID(id);
+            TestDTO actualDTO = await _testRepository.GetByID(entityToGetID);
 
             string actualSerializedDTO = JsonConvert.SerializeObject(actualDTO);
 
             Assert.AreEqual(expectedSerializedDTO, actualSerializedDTO);
+        }
+
+        [Test]
+        public async Task GetByID_TryToGetNonExistentEntity_ReturnsNull()
+        {
+            const int entityToGetID = 7;
+
+            TestDTO actualDTO = await _testRepository.GetByID(entityToGetID);
+
+            Assert.AreEqual(null, actualDTO);
         }
 
         [Test]
@@ -97,6 +122,12 @@ namespace DevOps.Product.Common.Repository.Tests
         }
 
         [Test]
+        public void Create_TryToCreateEntityWithNull_ThrowsException()
+        {
+            Assert.ThrowsAsync<ArgumentNullException>(async () => await _testRepository.Create(null));
+        }
+
+        [Test]
         public async Task Delete_SetIsActiveOnEntityToFalse_Succeeds()
         {
             const int expectedID = 1;
@@ -108,6 +139,14 @@ namespace DevOps.Product.Common.Repository.Tests
             await _testRepository.Delete(expectedID);
 
             Assert.IsFalse(entity.IsActive);
+        }
+
+        [Test]
+        public void Delete_TryToDeleteNonExistentEntity_ThrowsException()
+        {
+            const int expectedID = 7;
+
+            Assert.ThrowsAsync<ArgumentException>(async () => await _testRepository.Delete(expectedID));
         }
 
         [Test]
@@ -129,17 +168,42 @@ namespace DevOps.Product.Common.Repository.Tests
         }
 
         [Test]
-        public async Task EntityExists_ChecksIfEntityExistsByID_ReturnsTrue([Values(1, 2, 3)] int id)
+        public async Task Update_TryToUpdateNonExistentEntity_ThrowsException()
         {
-            bool doesExist = await _testRepository.EntityExists(id);
+            const int entityToUseID = 1;
+            const int entityToUpdateID = 7;
+
+            TestDTO dto = _mapper.Map<TestDTO>(await _context.FindAsync<TestEntity>(entityToUseID));
+
+            Assert.ThrowsAsync<ArgumentException>(async () => await _testRepository.Update(entityToUpdateID, dto));
+        }
+
+        [Test]
+        public async Task Update_TryToUpdateDeletedEntity_ThrowsException()
+        {
+            const int entityToUpdateID = 3;
+
+            TestDTO dto = _mapper.Map<TestDTO>(await _context.FindAsync<TestEntity>(entityToUpdateID));
+
+            Assert.ThrowsAsync<DbUpdateException>(async () => await _testRepository.Update(entityToUpdateID, dto));
+        }
+
+        [Test]
+        public async Task EntityExists_ChecksIfEntityExistsByID_ReturnsTrue()
+        {
+            const int entityToCheckID = 1;
+
+            bool doesExist = await _testRepository.EntityExists(entityToCheckID);
 
             Assert.IsTrue(doesExist);
         }
 
         [Test]
-        public async Task EntityExists_ChecksIfEntityExistsByID_ReturnsFalse([Values(-10, 0, 10)] int id)
+        public async Task EntityExists_ChecksIfEntityExistsByID_ReturnsFalse()
         {
-            bool doesExist = await _testRepository.EntityExists(id);
+            const int entityToCheckID = 7;
+
+            bool doesExist = await _testRepository.EntityExists(entityToCheckID);
 
             Assert.IsFalse(doesExist);
         }
