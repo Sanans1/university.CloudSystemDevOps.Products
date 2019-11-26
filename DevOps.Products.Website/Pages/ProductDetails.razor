@@ -30,6 +30,8 @@ else
 				<td>@_productDetailsState.Product.CategoryName</td>
 				<td>@_productDetailsState.Product.BrandName</td>
 				<td>@_productDetailsState.Product.Description</td>
+				<td>@_productDetailsState.Product.Price</td>
+				<td>@_productDetailsState.Product.InStock</td>
 			</tr>
 		</tbody>
 	</table>
@@ -84,8 +86,7 @@ else
 	private async void SubmitReview()
 	{
 		_productDetailsState.Reviews.Add(await ProductDetailsService.SubmitReview(_productDetailsState.ReviewForm));
-		_productDetailsState.ReviewForm.Rating = 0;
-		_productDetailsState.ReviewForm.Text = null;
+		//TODO Change how this works, in order to have more control over the state, perhaps refactor this whole web-sde of things.
 		this.StateHasChanged();
 	}
 }
