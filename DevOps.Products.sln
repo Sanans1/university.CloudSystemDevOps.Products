@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOps.Products.Reviews.DAL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOps.Products.Website.Tests", "DevOps.Products.Website.Tests\DevOps.Products.Website.Tests.csproj", "{48A920D8-CF08-44C1-B338-667B7120321B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOps.Product.Common.Repository.Tests", "DevOps.Product.Common.Repository.Tests\DevOps.Product.Common.Repository.Tests.csproj", "{EFF5301D-0CBF-4F66-87D3-43BDC94820E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOps.Products.Common.Repository.Tests", "DevOps.Products.Common.Repository.Tests\DevOps.Products.Common.Repository.Tests.csproj", "{EFF5301D-0CBF-4F66-87D3-43BDC94820E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
