@@ -19,6 +19,7 @@ using DevOps.Products.Website.Services.Interfaces.Facades;
 using DevOps.Products.Website.Services.Interfaces.Pages;
 using DevOps.Products.Website.Services.Fakes;
 using Flurl.Http;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace DevOps.Products.Website
 {
@@ -51,7 +52,7 @@ namespace DevOps.Products.Website
             //Pages
             services.AddScoped<IProductListService, ProductListService>();
             services.AddScoped<IProductDetailsService, ProductDetailsService>();
-
+            
             //Facades
             if (SHOULD_MOCK_PRODUCT_FACADE) 
                 services.AddSingleton<IProductFacadeService, FakeProductFacadeService>(); 

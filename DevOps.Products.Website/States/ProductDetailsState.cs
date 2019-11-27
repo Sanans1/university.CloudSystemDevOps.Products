@@ -11,17 +11,10 @@ namespace DevOps.Products.Website.States
             Product = product;
             Reviews = reviews;
             Customer = customer;
-
-            ReviewForm = new ReviewViewModel
-            {
-                ProductID = product.ID,
-                Customer = customer
-            };
         }
 
         public ProductViewModel Product { get; set; }
         public ICollection<ReviewViewModel> Reviews { get; set; }
         public CustomerViewModel Customer { get; set; }
-        public ReviewViewModel ReviewForm { get; set; }
     }
 }

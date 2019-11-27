@@ -48,13 +48,13 @@ namespace DevOps.Products.Website.Services.Implementations.Pages
             return new ProductDetailsState(productDetails, reviews, customer);
         }
 
-        public async Task<ReviewViewModel> SubmitReview(ReviewViewModel review)
+        public async Task<ReviewViewModel> SubmitReview(ReviewViewModel reviewForm)
         {
-            ReviewDTO reviewDTO = _mapper.Map<ReviewDTO>(review);
+            ReviewDTO reviewDTO = _mapper.Map<ReviewDTO>(reviewForm);
 
             await _reviewFacadeService.CreateReview(reviewDTO);
 
-            return review;
+            return reviewForm;
         }
 
         #endregion
