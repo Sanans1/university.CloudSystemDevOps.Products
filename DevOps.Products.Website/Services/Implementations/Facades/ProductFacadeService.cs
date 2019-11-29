@@ -12,7 +12,7 @@ namespace DevOps.Products.Website.Services.Implementations.Facades
 {
     public class ProductFacadeService : IProductFacadeService
     {
-        private const string API_URL = "http://localhost:62991/api/Products";
+        private const string API_URL = "http://localhost:50998/api/Products";
 
         public async Task<IEnumerable<ProductDTO>> GetProductCollection(string searchString = null, int? categoryID = null, int? brandID = null)
         {
