@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  devops.products.website:
+    image: ${DOCKER_REGISTRY-}devopsproductswebsite
+    build:
+      context: .
+      dockerfile: DevOps.Products.Website\Dockerfile
+
+  devops.products.reviews.rest.api:
+    image: ${DOCKER_REGISTRY-}devopsproductsreviewsrestapi
+    build:
+      context: .
+      dockerfile: DevOps.Products.Reviews.REST.API\Dockerfile
+
+
+  devops.products.products.rest.api:
+    image: ${DOCKER_REGISTRY-}devopsproductsproductsrestapi
+    build:
+      context: .
+      dockerfile: DevOps.Products.Products.REST.API\Dockerfile
+
