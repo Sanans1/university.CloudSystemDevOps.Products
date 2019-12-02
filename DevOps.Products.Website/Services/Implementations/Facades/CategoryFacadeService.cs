@@ -11,7 +11,7 @@ namespace DevOps.Products.Website.Services.Implementations.Facades
 {
     public class CategoryFacadeService : ICategoryFacadeService
     {
-        private const string API_URL = "http://localhost:62991/api/Categories";
+        private const string API_URL = "http://localhost:50998/api/Categories";
 
         public async Task<IEnumerable<CategoryDTO>> GetCategoryCollection()
         {
