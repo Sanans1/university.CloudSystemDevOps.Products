@@ -47,7 +47,7 @@ namespace DevOps.Products.Website
 
             //NuGet Package Services
             services.AddAutoMapper(typeof(Startup));
-            FlurlHttp.Configure(settings => settings.HttpClientFactory = new PollyHttpClientFactory());
+            //FlurlHttp.Configure(settings => settings.HttpClientFactory = new PollyHttpClientFactory());
 
             //Pages
             services.AddScoped<IProductListService, ProductListService>();
