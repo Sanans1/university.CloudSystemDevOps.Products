@@ -60,12 +60,15 @@ namespace DevOps.Products.Products.REST.API
                 endpoints.MapControllers();
             });
 
-            app.UseSwagger();
+            app.UseSwagger(options =>
+            {
+                options.RouteTemplate = "products/swagger/{documentName}/swagger.json";
+            });
 
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Products REST API");
-                options.RoutePrefix = "";
+                options.SwaggerEndpoint("/products/swagger/v1/swagger.json", "Products REST API");
+                options.RoutePrefix = "products/swagger";
             });
         }
     }

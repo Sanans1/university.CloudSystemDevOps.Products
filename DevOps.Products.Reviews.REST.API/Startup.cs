@@ -55,12 +55,15 @@ namespace DevOps.Products.Reviews.REST.API
                 endpoints.MapControllers();
             });
 
-            app.UseSwagger();
+            app.UseSwagger(options =>
+            {
+                options.RouteTemplate = "reviews/swagger/{documentName}/swagger.json";
+            });
 
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Reviews REST API");
-                options.RoutePrefix = "";
+                options.SwaggerEndpoint("/reviews/swagger/v1/swagger.json", "Reviews REST API");
+                options.RoutePrefix = "reviews/swagger";
             });
         }
     }
