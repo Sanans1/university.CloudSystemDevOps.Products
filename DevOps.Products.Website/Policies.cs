@@ -21,7 +21,7 @@ namespace DevOps.Products.Website
         {
             get
             {
-                return Policy.HandleResult<HttpResponseMessage>(message => !message.IsSuccessStatusCode)
+                return Policy.HandleResult<HttpResponseMessage>(message => (int)message.StatusCode >= 400 && (int)message.StatusCode < 500)
                     .Or<TimeoutRejectedException>()
                     .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
             }
@@ -31,10 +31,10 @@ namespace DevOps.Products.Website
         {
             get
             {
-                return Policy.HandleResult<HttpResponseMessage>(message => !message.IsSuccessStatusCode)
+                return Policy.HandleResult<HttpResponseMessage>(message => (int)message.StatusCode == 408 || (int)message.StatusCode >= 500)
                     .CircuitBreakerAsync(
                         3,
-                        TimeSpan.FromSeconds(30)
+                        TimeSpan.FromSeconds(10)
                     );
             }
         }
