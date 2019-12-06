@@ -1,19 +1,12 @@
 version: '3.4'
 
 services:
-  devops.products.reviews.rest.api:
-    image: ${DOCKER_REGISTRY-}devopsproductsreviewsrestapi
-    container_name: reviews
+  nginx-proxy:
     build:
-      context: .
-      dockerfile: DevOps.Products.Reviews.REST.API/Dockerfile
-
-  devops.products.products.rest.api:
-    image: ${DOCKER_REGISTRY-}devopsproductsproductsrestapi
-    container_name: products
-    build:
-      context: .
-      dockerfile: DevOps.Products.Products.REST.API/Dockerfile
+      context:  .
+      dockerfile: nginx/Dockerfile
+    ports:
+      - "8080:80"
 
   devops.products.website:
     image: ${DOCKER_REGISTRY-}devopsproductswebsite
@@ -27,3 +20,17 @@ services:
     depends_on:
       - devops.products.products.rest.api
       - devops.products.reviews.rest.api
+
+  devops.products.products.rest.api:
+    image: ${DOCKER_REGISTRY-}devopsproductsproductsrestapi
+    container_name: products
+    build:
+      context: .
+      dockerfile: DevOps.Products.Products.REST.API/Dockerfile
+
+  devops.products.reviews.rest.api:
+    image: ${DOCKER_REGISTRY-}devopsproductsreviewsrestapi
+    container_name: reviews
+    build:
+      context: .
+      dockerfile: DevOps.Products.Reviews.REST.API/Dockerfile

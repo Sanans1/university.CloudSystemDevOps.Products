@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using DevOps.Products.Website.Services.Fakes.Facades;
@@ -19,6 +20,7 @@ using DevOps.Products.Website.Services.Interfaces.Facades;
 using DevOps.Products.Website.Services.Interfaces.Pages;
 using DevOps.Products.Website.Services.Fakes;
 using Flurl.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace DevOps.Products.Website
@@ -78,11 +80,20 @@ namespace DevOps.Products.Website
                 services.AddSingleton<ICustomerFacadeService, FakeCustomerFacadeService>();
             else
                 services.AddScoped<ICustomerFacadeService, CustomerFacadeService>();
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                //options.KnownProxies.Add(IPAddress.Parse("127.0.10.1"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseForwardedHeaders();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
