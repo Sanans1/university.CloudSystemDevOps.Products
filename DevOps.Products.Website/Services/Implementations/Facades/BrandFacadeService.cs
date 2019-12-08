@@ -12,7 +12,7 @@ namespace DevOps.Products.Website.Services.Implementations.Facades
 {
     public class BrandFacadeService : IBrandFacadeService
     {
-        private const string API_URL = "http://products/api/Brands";
+        private const string API_URL = "https://team-f.azurewebsites.net/api/product-management/brands";
 
         public async Task<IEnumerable<BrandDTO>> GetBrandCollection()
         {

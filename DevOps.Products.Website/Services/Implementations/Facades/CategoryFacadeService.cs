@@ -11,7 +11,7 @@ namespace DevOps.Products.Website.Services.Implementations.Facades
 {
     public class CategoryFacadeService : ICategoryFacadeService
     {
-        private const string API_URL = "http://products/api/Categories";
+        private const string API_URL = "https://team-f.azurewebsites.net/api/product-management/categories";
 
         public async Task<IEnumerable<CategoryDTO>> GetCategoryCollection()
         {
