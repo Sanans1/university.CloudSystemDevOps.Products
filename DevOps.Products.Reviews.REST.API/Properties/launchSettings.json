@@ -2,8 +2,12 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/DevOps.Products.Reviews.REST.API",
+      "sslPort": 0
+    },
     "iisExpress": {
-      "applicationUrl": "http://localhost:52792/",
+      "applicationUrl": "http://localhost:52790/api/reviews",
       "sslPort": 0
     }
   },
@@ -11,7 +15,6 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -23,13 +26,6 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:5000"
-    },
-    "Docker": {
-      "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
-      "environmentVariables": {},
-      "httpPort": 53504
     }
   }
 }

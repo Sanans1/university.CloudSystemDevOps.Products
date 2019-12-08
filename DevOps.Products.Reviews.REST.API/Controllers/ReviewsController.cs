@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DevOps.Products.Reviews.REST.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/review-management/[controller]")]
     [ApiController]
     public class ReviewsController : ControllerBase
     {

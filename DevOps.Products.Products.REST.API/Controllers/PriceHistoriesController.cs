@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevOps.Products.Products.REST.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/product-management/[controller]")]
     [ApiController]
     public class PriceHistoriesController : ControllerBase
     {
