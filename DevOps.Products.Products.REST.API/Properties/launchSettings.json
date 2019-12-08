@@ -9,7 +9,7 @@
   },
   "profiles": {
     "DevOps.Products.Products.REST.API": {
-      "commandName": "IISExpress"
+      "commandName": "IISExpress",
       "ancmHostingModel": "OutOfProcess"
     }
   }
