@@ -12,7 +12,7 @@ namespace DevOps.Products.Website.Services.Implementations.Facades
 {
     public class ReviewFacadeService : IReviewFacadeService
     {
-        private const string API_URL = "http://reviews/api/Reviews";
+        private const string API_URL = "https://team-f.azurewebsites.net/api/product-management/reviews";
 
         public async Task<IEnumerable<ReviewDTO>> GetReviewCollection(int id)
         {
