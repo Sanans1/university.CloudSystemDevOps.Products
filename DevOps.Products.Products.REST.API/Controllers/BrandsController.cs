@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevOps.Products.Products.REST.API.Controllers
 {
-    [Route("api/product-management/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class BrandsController : ControllerBase
     {
