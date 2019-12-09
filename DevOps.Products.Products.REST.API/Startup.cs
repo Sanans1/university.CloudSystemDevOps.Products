@@ -72,13 +72,13 @@ namespace DevOps.Products.Products.REST.API
 
             app.UseSwagger(options =>
             {
-                options.RouteTemplate = "api/product-management/swagger/{documentName}/swagger.json";
+                options.RouteTemplate = "swagger/{documentName}/swagger.json";
             });
 
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("api/product-management/swagger/v1/swagger.json", "Products REST API");
                 options.RoutePrefix = "swagger";
+                options.SwaggerEndpoint("v1/swagger.json", "Products REST API");
             });
         }
     }
