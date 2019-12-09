@@ -72,7 +72,7 @@ namespace DevOps.Products.Reviews.REST.API
 
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Reviews REST API");
+                options.SwaggerEndpoint("api/review-management/swagger/v1/swagger.json", "Reviews REST API");
                 options.RoutePrefix = "swagger";
             });
         }
