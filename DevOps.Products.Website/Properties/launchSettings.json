@@ -10,7 +10,8 @@
   "profiles": {
     "DevOps.Products.Website": {
       "commandName": "IISExpress",
-      "launchBrowser": true
+      "launchBrowser": true,
+      "ancmHostingModel": "OutOfProcess"
     }
   }
 }
