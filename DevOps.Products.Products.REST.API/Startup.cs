@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using DevOps.Products.Common.Repository;
 using DevOps.Products.Products.DAL;
 using DevOps.Products.Products.REST.API.Models;
@@ -14,6 +14,8 @@ namespace DevOps.Products.Products.REST.API
 {
     public class Startup
     {
+        private const bool SHOULD_USE_IN_MEMORY_DB = false;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,9 +30,17 @@ namespace DevOps.Products.Products.REST.API
 
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddDbContext<ProductContext>(options => options.UseLazyLoadingProxies()
-                                                                                .EnableSensitiveDataLogging()
-                                                                                .UseInMemoryDatabase( "Products"));
+            if (SHOULD_USE_IN_MEMORY_DB)
+            {
+                services.AddDbContext<ProductContext>(options => options.UseLazyLoadingProxies()
+                                                                                   .UseInMemoryDatabase("Products"));
+            }
+            else
+            {
+                string databaseConnectionString = Configuration.GetConnectionString("ProductDatabase");
+                services.AddDbContext<ProductContext>(options => options.UseLazyLoadingProxies()
+                    .UseSqlServer(databaseConnectionString));
+            }
 
             services.AddScoped<IGenericRepository<Product, ProductDTO>, GenericRepository<ProductContext, Product, ProductDTO>>();
             services.AddScoped<IGenericRepository<Category, CategoryDTO>, GenericRepository<ProductContext, Category, CategoryDTO>>();
@@ -62,13 +72,13 @@ namespace DevOps.Products.Products.REST.API
 
             app.UseSwagger(options =>
             {
-                options.RouteTemplate = "products/swagger/{documentName}/swagger.json";
+                options.RouteTemplate = "swagger/{documentName}/swagger.json";
             });
 
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/products/swagger/v1/swagger.json", "Products REST API");
-                options.RoutePrefix = "products/swagger";
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Products REST API");
+                options.RoutePrefix = "swagger";
             });
         }
     }

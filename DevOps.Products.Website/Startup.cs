@@ -1,27 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using DevOps.Products.Website.Services.Fakes.Facades;
+using DevOps.Products.Website.Services.Implementations.Facades;
+using DevOps.Products.Website.Services.Implementations.Pages;
+using DevOps.Products.Website.Services.Interfaces.Facades;
+using DevOps.Products.Website.Services.Interfaces.Pages;
+using Flurl.Http;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DevOps.Products.Website.Services.Implementations;
-using DevOps.Products.Website.Services.Implementations.Facades;
-using DevOps.Products.Website.Services.Implementations.Pages;
-using DevOps.Products.Website.Services.Interfaces;
-using DevOps.Products.Website.Services.Interfaces.Facades;
-using DevOps.Products.Website.Services.Interfaces.Pages;
-using DevOps.Products.Website.Services.Fakes;
-using Flurl.Http;
-using Microsoft.AspNetCore.HttpOverrides;
-using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace DevOps.Products.Website
 {
@@ -80,13 +69,6 @@ namespace DevOps.Products.Website
                 services.AddSingleton<ICustomerFacadeService, FakeCustomerFacadeService>();
             else
                 services.AddScoped<ICustomerFacadeService, CustomerFacadeService>();
-
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders =
-                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-                //options.KnownProxies.Add(IPAddress.Parse("127.0.10.1"));
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

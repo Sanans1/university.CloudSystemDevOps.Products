@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using DevOps.Products.Common.Repository;
 using DevOps.Products.Reviews.DAL;
 using DevOps.Products.Reviews.REST.API.Models;
@@ -14,6 +14,8 @@ namespace DevOps.Products.Reviews.REST.API
 {
     public class Startup
     {
+        private const bool SHOULD_USE_IN_MEMORY_DB = false;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,7 +30,15 @@ namespace DevOps.Products.Reviews.REST.API
 
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddDbContext<ReviewContext>(options => options.UseInMemoryDatabase("Reviews"));
+            if (SHOULD_USE_IN_MEMORY_DB)
+            {
+                services.AddDbContext<ReviewContext>(options => options.UseInMemoryDatabase("Reviews"));
+            }
+            else
+            {
+                string databaseConnectionString = Configuration.GetConnectionString("ReviewDatabase");
+                services.AddDbContext<ReviewContext>(options => options.UseSqlServer(databaseConnectionString));
+            }
 
             services.AddScoped<IGenericRepository<Review, ReviewDTO>, GenericRepository<ReviewContext, Review, ReviewDTO>>();
 
@@ -57,13 +67,13 @@ namespace DevOps.Products.Reviews.REST.API
 
             app.UseSwagger(options =>
             {
-                options.RouteTemplate = "reviews/swagger/{documentName}/swagger.json";
+                options.RouteTemplate = "swagger/{documentName}/swagger.json";
             });
 
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/reviews/swagger/v1/swagger.json", "Reviews REST API");
-                options.RoutePrefix = "reviews/swagger";
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Reviews REST API");
+                options.RoutePrefix = "swagger";
             });
         }
     }

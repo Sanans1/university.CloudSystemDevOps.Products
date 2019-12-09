@@ -4,8 +4,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>DevOps.Products.Reviews.REST.API</AssemblyName>
     <RootNamespace>DevOps.Products.Reviews.REST.API</RootNamespace>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +18,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DevOps.Products.Reviews.DAL\DevOps.Products.Reviews.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

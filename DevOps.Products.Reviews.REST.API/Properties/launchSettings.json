@@ -7,25 +7,14 @@
       "sslPort": 0
     },
     "iisExpress": {
-      "applicationUrl": "http://localhost:52790/api/reviews",
+      "applicationUrl": "http://localhost:63645/",
       "sslPort": 0
     }
   },
-  "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "IIS Express": {
+    "DevOps.Products.Reviews.REST.API": {
       "commandName": "IISExpress",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "DevOps.Products.Reviews.REST": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:5000"
+      "ancmHostingModel": "OutOfProcess"
     }
   }
 }

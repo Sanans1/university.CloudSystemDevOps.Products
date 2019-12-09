@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using DevOps.Products.Products.DAL;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +18,6 @@ namespace DevOps.Products.Products.REST.API
             {
                 IServiceProvider services = scope.ServiceProvider;
                 ProductContext context = services.GetRequiredService<ProductContext>();
-                //context.Database.Migrate();
 
                 IWebHostEnvironment env = services.GetRequiredService<IWebHostEnvironment>();
                 if (env.IsDevelopment())
@@ -32,6 +31,10 @@ namespace DevOps.Products.Products.REST.API
                         ILogger<Program> logger = services.GetRequiredService<ILogger<Program>>();
                         logger.LogDebug("Seeding test data failed.");
                     }
+                }
+                else
+                {
+                    context.Database.Migrate();
                 }
             }
 

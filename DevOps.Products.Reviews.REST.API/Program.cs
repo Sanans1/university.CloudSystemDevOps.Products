@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using DevOps.Products.Reviews.DAL;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,11 @@ namespace DevOps.Products.Reviews.REST.API
             {
                 IServiceProvider services = scope.ServiceProvider;
                 ReviewContext context = services.GetRequiredService<ReviewContext>();
-                //context.Database.Migrate();
+
+                IWebHostEnvironment env = services.GetRequiredService<IWebHostEnvironment>();
+                
+                if (env.IsProduction())
+                    context.Database.Migrate();
             }
 
             host.Run();
