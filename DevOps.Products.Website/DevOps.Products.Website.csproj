@@ -21,7 +21,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.5" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
     <PackageReference Include="Polly" Version="7.1.1" />
-    <PackageReference Include="Toolbelt.Blazor.LoadingBar" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
