@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using DevOps.Products.Common.Repository;
 using DevOps.Products.Products.DAL;
 using DevOps.Products.Products.REST.API.Models;
@@ -14,14 +15,14 @@ namespace DevOps.Products.Products.REST.API
 {
     public class Startup
     {
-        private const bool SHOULD_USE_IN_MEMORY_DB = false;
-
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -30,16 +31,15 @@ namespace DevOps.Products.Products.REST.API
 
             services.AddAutoMapper(typeof(Startup));
 
-            if (SHOULD_USE_IN_MEMORY_DB)
+            if (Environment.IsDevelopment())
             {
                 services.AddDbContext<ProductContext>(options => options.UseLazyLoadingProxies()
-                                                                                   .UseInMemoryDatabase("Products"));
+                                                                                    .UseInMemoryDatabase("Products"));
             }
             else
             {
-                string databaseConnectionString = Configuration.GetConnectionString("ProductDatabase");
                 services.AddDbContext<ProductContext>(options => options.UseLazyLoadingProxies()
-                    .UseSqlServer(databaseConnectionString));
+                                                                                    .UseSqlServer(Configuration.GetConnectionString("ProductDatabase")));
             }
 
             services.AddScoped<IGenericRepository<Product, ProductDTO>, GenericRepository<ProductContext, Product, ProductDTO>>();
@@ -54,9 +54,9 @@ namespace DevOps.Products.Products.REST.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

@@ -14,14 +14,14 @@ namespace DevOps.Products.Reviews.REST.API
 {
     public class Startup
     {
-        private const bool SHOULD_USE_IN_MEMORY_DB = false;
-
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -30,14 +30,13 @@ namespace DevOps.Products.Reviews.REST.API
 
             services.AddAutoMapper(typeof(Startup));
 
-            if (SHOULD_USE_IN_MEMORY_DB)
+            if (Environment.IsDevelopment())
             {
                 services.AddDbContext<ReviewContext>(options => options.UseInMemoryDatabase("Reviews"));
             }
             else
             {
-                string databaseConnectionString = Configuration.GetConnectionString("ReviewDatabase");
-                services.AddDbContext<ReviewContext>(options => options.UseSqlServer(databaseConnectionString));
+                services.AddDbContext<ReviewContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ReviewDatabase")));
             }
 
             services.AddScoped<IGenericRepository<Review, ReviewDTO>, GenericRepository<ReviewContext, Review, ReviewDTO>>();
@@ -49,9 +48,9 @@ namespace DevOps.Products.Reviews.REST.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

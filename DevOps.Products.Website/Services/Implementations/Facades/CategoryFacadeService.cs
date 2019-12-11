@@ -11,11 +11,11 @@ namespace DevOps.Products.Website.Services.Implementations.Facades
 {
     public class CategoryFacadeService : ICategoryFacadeService
     {
-        private const string API_URL = "https://team-f.azurewebsites.net/api/product-management/categories";
+        private string _apiUrl = $"{Environment.GetEnvironmentVariable("PRODUCT_REST_API_URL")}categories";
 
         public async Task<IEnumerable<CategoryDTO>> GetCategoryCollection()
         {
-            HttpResponseMessage response = await API_URL.GetAsync();
+            HttpResponseMessage response = await _apiUrl.GetAsync();
 
             IEnumerable<CategoryDTO> categories = await response.Content.ReadAsAsync<IEnumerable<CategoryDTO>>();
 

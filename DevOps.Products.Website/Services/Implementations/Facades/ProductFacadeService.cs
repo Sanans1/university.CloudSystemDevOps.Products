@@ -12,11 +12,11 @@ namespace DevOps.Products.Website.Services.Implementations.Facades
 {
     public class ProductFacadeService : IProductFacadeService
     {
-        private const string API_URL = "https://team-f.azurewebsites.net/api/product-management/products";
+        private string _apiUrl = $"{Environment.GetEnvironmentVariable("PRODUCT_REST_API_URL")}products";
 
         public async Task<IEnumerable<ProductDTO>> GetProductCollection(string searchString = null, int? categoryID = null, int? brandID = null)
         {
-            string url = API_URL.SetQueryParam("searchString", searchString);
+            string url = _apiUrl.SetQueryParam("searchString", searchString);
             url = url.SetQueryParam("categoryID", categoryID);
             url = url.SetQueryParam("brandID", brandID);
 
@@ -29,7 +29,7 @@ namespace DevOps.Products.Website.Services.Implementations.Facades
 
         public async Task<ProductDTO> GetProduct(int id)
         {
-            string url = API_URL.AppendPathSegment(id);
+            string url = _apiUrl.AppendPathSegment(id);
 
             HttpResponseMessage response = await url.GetAsync();
 
