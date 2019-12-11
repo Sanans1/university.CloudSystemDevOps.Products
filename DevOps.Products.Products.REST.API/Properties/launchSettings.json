@@ -10,7 +10,10 @@
   "profiles": {
     "DevOps.Products.Products.REST.API": {
       "commandName": "IISExpress",
-      "ancmHostingModel": "OutOfProcess"
+      "ancmHostingModel": "OutOfProcess",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

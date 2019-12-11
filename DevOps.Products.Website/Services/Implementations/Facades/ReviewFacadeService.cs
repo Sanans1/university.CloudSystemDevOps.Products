@@ -12,11 +12,11 @@ namespace DevOps.Products.Website.Services.Implementations.Facades
 {
     public class ReviewFacadeService : IReviewFacadeService
     {
-        private const string API_URL = "https://team-f.azurewebsites.net/api/product-management/reviews";
+        private string _apiUrl = $"{Environment.GetEnvironmentVariable("REVIEW_REST_API_URL")}reviews";
 
         public async Task<IEnumerable<ReviewDTO>> GetReviewCollection(int id)
         {
-            string url = API_URL.SetQueryParam("productID", id);
+            string url = _apiUrl.SetQueryParam("productID", id);
 
             HttpResponseMessage response = await url.GetAsync();
 
@@ -25,7 +25,7 @@ namespace DevOps.Products.Website.Services.Implementations.Facades
 
         public async Task<bool> CreateReview(ReviewDTO reviewDTO)
         {
-            HttpResponseMessage response = await API_URL.PostJsonAsync(reviewDTO);
+            HttpResponseMessage response = await _apiUrl.PostJsonAsync(reviewDTO);
 
             return response.IsSuccessStatusCode;
         }

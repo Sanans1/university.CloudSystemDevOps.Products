@@ -22,12 +22,14 @@ namespace DevOps.Products.Website
         private const bool SHOULD_MOCK_REVIEW_FACADE = false;
         private const bool SHOULD_MOCK_CUSTOMER_FACADE = true;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -45,38 +47,38 @@ namespace DevOps.Products.Website
             services.AddScoped<IProductDetailsService, ProductDetailsService>();
             
             //Facades
-            if (SHOULD_MOCK_PRODUCT_FACADE) 
+            if (SHOULD_MOCK_PRODUCT_FACADE && Environment.IsDevelopment()) 
                 services.AddSingleton<IProductFacadeService, FakeProductFacadeService>(); 
             else 
                 services.AddScoped<IProductFacadeService, ProductFacadeService>();
 
-            if (SHOULD_MOCK_CATEGORY_FACADE) 
+            if (SHOULD_MOCK_CATEGORY_FACADE && Environment.IsDevelopment()) 
                 services.AddSingleton<ICategoryFacadeService, FakeCategoryFacadeService>();
             else
                 services.AddScoped<ICategoryFacadeService, CategoryFacadeService>();
 
-            if (SHOULD_MOCK_BRAND_FACADE) 
+            if (SHOULD_MOCK_BRAND_FACADE && Environment.IsDevelopment()) 
                 services.AddSingleton<IBrandFacadeService, FakeBrandFacadeService>();
             else
                 services.AddScoped<IBrandFacadeService, BrandFacadeService>();
 
-            if (SHOULD_MOCK_REVIEW_FACADE) 
+            if (SHOULD_MOCK_REVIEW_FACADE && Environment.IsDevelopment()) 
                 services.AddSingleton<IReviewFacadeService, FakeReviewFacadeService>();
             else
                 services.AddScoped<IReviewFacadeService, ReviewFacadeService>();
 
-            if (SHOULD_MOCK_CUSTOMER_FACADE) 
+            if (SHOULD_MOCK_CUSTOMER_FACADE) //TODO add environment check once customer facade can do something
                 services.AddSingleton<ICustomerFacadeService, FakeCustomerFacadeService>();
             else
                 services.AddScoped<ICustomerFacadeService, CustomerFacadeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseForwardedHeaders();
 
-            if (env.IsDevelopment())
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

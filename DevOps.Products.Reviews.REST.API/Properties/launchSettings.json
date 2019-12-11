@@ -2,10 +2,6 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
-    "iis": {
-      "applicationUrl": "http://localhost/DevOps.Products.Reviews.REST.API",
-      "sslPort": 0
-    },
     "iisExpress": {
       "applicationUrl": "http://localhost:63645/",
       "sslPort": 0
@@ -14,7 +10,10 @@
   "profiles": {
     "DevOps.Products.Reviews.REST.API": {
       "commandName": "IISExpress",
-      "ancmHostingModel": "OutOfProcess"
+      "ancmHostingModel": "OutOfProcess",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

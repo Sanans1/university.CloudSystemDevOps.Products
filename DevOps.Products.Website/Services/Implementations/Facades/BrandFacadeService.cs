@@ -12,11 +12,11 @@ namespace DevOps.Products.Website.Services.Implementations.Facades
 {
     public class BrandFacadeService : IBrandFacadeService
     {
-        private const string API_URL = "https://team-f.azurewebsites.net/api/product-management/brands";
+        private string _apiUrl = $"{Environment.GetEnvironmentVariable("PRODUCT_REST_API_URL")}brands";
 
         public async Task<IEnumerable<BrandDTO>> GetBrandCollection()
         {
-            HttpResponseMessage response = await API_URL.GetAsync();
+            HttpResponseMessage response = await _apiUrl.GetAsync();
 
             IEnumerable<BrandDTO> brands = await response.Content.ReadAsAsync<IEnumerable<BrandDTO>>();
 

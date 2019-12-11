@@ -11,6 +11,11 @@
     "DevOps.Products.Website": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "environmentVariables": {
+        "PRODUCT_REST_API_URL": "http://localhost:63632/",
+        "REVIEW_REST_API_URL": "http://localhost:63645/",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
       "ancmHostingModel": "OutOfProcess"
     }
   }
