@@ -61,6 +61,8 @@ namespace DevOps.Products.Products.REST.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
+
             app.UseRouting();
 
             app.UseAuthorization();
