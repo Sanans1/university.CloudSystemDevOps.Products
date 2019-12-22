@@ -54,7 +54,7 @@ namespace DevOps.Products.Website.Tests
                 Name = "Banana",
                 Description = "Amazingly Tasty Bananas!",
                 Price = 1.50m,
-                InStock = true,
+                InStock = "In Stock",
                 CategoryID = 1,
                 CategoryName = "Fruits",
                 BrandID = 1,
