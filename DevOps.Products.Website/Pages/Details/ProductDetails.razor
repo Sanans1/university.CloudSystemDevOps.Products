@@ -22,6 +22,8 @@ else
 				<th>Category</th>
 				<th>Brand</th>
 				<th>Description</th>
+                <th>Price</th>
+                <th>In Stock</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -30,7 +32,7 @@ else
 				<td>@_productDetailsState.Product.CategoryName</td>
 				<td>@_productDetailsState.Product.BrandName</td>
 				<td>@_productDetailsState.Product.Description</td>
-				<td>@_productDetailsState.Product.Price</td>
+                <td>£@_productDetailsState.Product.Price.ToString("f2")</td>
 				<td>@_productDetailsState.Product.InStock</td>
 			</tr>
 		</tbody>
