@@ -21,6 +21,9 @@ namespace DevOps.Products.Website.Tests
     [TestFixture]
     public class ProductDetailsServiceTests
     {
+        private const string IN_STOCK_STRING = "In Stock";
+        private const string OUT_OF_STOCK_STRING = "Out of Stock";
+
         private IMapper _mapper;
         private ProductDetailsService _productDetailsService;
 
@@ -32,7 +35,7 @@ namespace DevOps.Products.Website.Tests
                 configuration.CreateMap<CustomerDTO, CustomerViewModel>().ReverseMap();
                 configuration.CreateMap<ReviewDTO, ReviewViewModel>().ForPath(destination => destination.Customer.ID, options => options.MapFrom(source => source.CustomerID))
                     .ReverseMap();
-                configuration.CreateMap<ProductDTO, ProductViewModel>().ForMember(destination => destination.InStock, options => options.MapFrom(source => source.Quantity > 0))
+                configuration.CreateMap<ProductDTO, ProductViewModel>().ForMember(destination => destination.InStock, options => options.MapFrom(source => source.Quantity > 0 ? IN_STOCK_STRING : OUT_OF_STOCK_STRING))
                     .ReverseMap();
             });
 

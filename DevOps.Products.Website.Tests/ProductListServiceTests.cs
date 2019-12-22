@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using DevOps.Products.Website.Models.DTOs;
 using DevOps.Products.Website.Models.ViewModels;
@@ -14,6 +14,9 @@ namespace DevOps.Products.Website.Tests
     [TestFixture]
     public class ProductListServiceTests
     {
+        private const string IN_STOCK_STRING = "In Stock";
+        private const string OUT_OF_STOCK_STRING = "Out of Stock";
+
         private IMapper _mapper;
         private ProductListService _productListService;
 
@@ -25,7 +28,8 @@ namespace DevOps.Products.Website.Tests
                 configuration.CreateMap<CategoryDTO, CategoryViewModel>();
                 configuration.CreateMap<BrandDTO, BrandViewModel>();
                 configuration.CreateMap<ProductDTO, Models.ViewModels.ProductList.ProductViewModel>().ForMember(
-                    destination => destination.InStock, options => options.MapFrom(source => source.Quantity > 0));
+                    destination => destination.InStock,
+                    options => options.MapFrom(source => source.Quantity > 0 ? IN_STOCK_STRING : OUT_OF_STOCK_STRING));
             });
 
             _mapper = new Mapper(mapperConfiguration);
