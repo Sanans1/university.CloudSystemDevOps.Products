@@ -5,38 +5,35 @@
 @using DevOps.Products.Website.States
 @inject IProductDetailsService ProductDetailsService
 
-<h1>Products</h1>
-
-<p>This component demonstrates fetching data from a service.</p>
-
 @if (_productDetailsState == null)
 {
 	<p><em>Loading...</em></p>
 }
 else
 {
+    <h1>@_productDetailsState.Product.Name</h1>
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Name</th>
 				<th>Category</th>
 				<th>Brand</th>
 				<th>Description</th>
-                <th>Price</th>
-                <th>In Stock</th>
+				<th>Price</th>
+				<th>In Stock</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td>@_productDetailsState.Product.Name</td>
 				<td>@_productDetailsState.Product.CategoryName</td>
 				<td>@_productDetailsState.Product.BrandName</td>
 				<td>@_productDetailsState.Product.Description</td>
-                <td>£@_productDetailsState.Product.Price.ToString("f2")</td>
+				<td>£@_productDetailsState.Product.Price.ToString("f2")</td>
 				<td>@_productDetailsState.Product.InStock</td>
+				<td><button>Buy Now</button></td>
 			</tr>
 		</tbody>
 	</table>
+	<h2>Reviews:</H2>
 	@if (!_productDetailsState.Reviews.Any())
 	{
 		<p><em>No Reviews yet!</em></p>
@@ -65,11 +62,11 @@ else
 	}
 
 	<EditForm Model="@_reviewForm" OnValidSubmit="@SubmitReview">
-		<DataAnnotationsValidator/>
-		<ValidationSummary/>
+		<DataAnnotationsValidator />
+		<ValidationSummary />
 
-		<InputNumber @bind-Value="_reviewForm.Rating" placeholder="Add a rating..."/>
-		<InputText @bind-Value="_reviewForm.Text" placeholder="Write a review..."/>
+		<InputNumber @bind-Value="_reviewForm.Rating" placeholder="Add a rating..." />
+		<InputText @bind-Value="_reviewForm.Text" placeholder="Write a review..." />
 		<button type="submit">Submit</button>
 	</EditForm>
 }

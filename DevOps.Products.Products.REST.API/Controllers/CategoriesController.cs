@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DevOps.Products.Common.Repository;
 using DevOps.Products.Products.DAL;
 using DevOps.Products.Products.REST.API.Models;
+using DevOps.Products.Products.REST.API.Services.Repos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,9 +13,9 @@ namespace DevOps.Products.Products.REST.API.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly IGenericRepository<Category, CategoryDTO> _categoryRepository;
+        private readonly CategoryRepository _categoryRepository;
 
-        public CategoriesController(IGenericRepository<Category, CategoryDTO> categoryRepository)
+        public CategoriesController(CategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }

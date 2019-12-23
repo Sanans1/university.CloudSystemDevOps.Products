@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DevOps.Products.Common.Repository;
 using DevOps.Products.Products.DAL;
 using DevOps.Products.Products.REST.API.Models;
+using DevOps.Products.Products.REST.API.Services.Repos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,9 +13,9 @@ namespace DevOps.Products.Products.REST.API.Controllers
     [ApiController]
     public class PriceHistoriesController : ControllerBase
     {
-        private readonly IGenericRepository<PriceHistory, PriceHistoryDTO> _priceHistoryRepository;
+        private readonly PriceHistoryRepository _priceHistoryRepository;
 
-        public PriceHistoriesController(IGenericRepository<PriceHistory, PriceHistoryDTO> priceHistoryRepository)
+        public PriceHistoriesController(PriceHistoryRepository priceHistoryRepository)
         {
             _priceHistoryRepository = priceHistoryRepository;
         }

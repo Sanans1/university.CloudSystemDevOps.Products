@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DevOps.Products.Common.Repository;
 using DevOps.Products.Products.DAL;
 using DevOps.Products.Products.REST.API.Models;
+using DevOps.Products.Products.REST.API.Services.Repos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,9 +13,9 @@ namespace DevOps.Products.Products.REST.API.Controllers
     [ApiController]
     public class BrandsController : ControllerBase
     {
-        private readonly IGenericRepository<Brand, BrandDTO> _brandRepository;
+        private readonly BrandRepository _brandRepository;
 
-        public BrandsController(IGenericRepository<Brand, BrandDTO> brandRepository)
+        public BrandsController(BrandRepository brandRepository)
         {
             _brandRepository = brandRepository;
         }

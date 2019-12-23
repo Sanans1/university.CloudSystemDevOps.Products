@@ -2,6 +2,7 @@
 using DevOps.Products.Common.Repository;
 using DevOps.Products.Reviews.DAL;
 using DevOps.Products.Reviews.REST.API.Models;
+using DevOps.Products.Reviews.REST.API.Services.Repos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,7 @@ namespace DevOps.Products.Reviews.REST.API
                 services.AddDbContext<ReviewContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ReviewDatabase")));
             }
 
-            services.AddScoped<IGenericRepository<Review, ReviewDTO>, GenericRepository<ReviewContext, Review, ReviewDTO>>();
+            services.AddScoped<ReviewRepository>();
 
             services.AddSwaggerGen(options =>
             {

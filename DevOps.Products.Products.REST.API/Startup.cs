@@ -3,6 +3,7 @@ using AutoMapper;
 using DevOps.Products.Common.Repository;
 using DevOps.Products.Products.DAL;
 using DevOps.Products.Products.REST.API.Models;
+using DevOps.Products.Products.REST.API.Services.Repos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -42,10 +43,10 @@ namespace DevOps.Products.Products.REST.API
                                                                                     .UseSqlServer(Configuration.GetConnectionString("ProductDatabase")));
             }
 
-            services.AddScoped<IGenericRepository<Product, ProductDTO>, GenericRepository<ProductContext, Product, ProductDTO>>();
-            services.AddScoped<IGenericRepository<Category, CategoryDTO>, GenericRepository<ProductContext, Category, CategoryDTO>>();
-            services.AddScoped<IGenericRepository<Brand, BrandDTO>, GenericRepository<ProductContext, Brand, BrandDTO>>();
-            services.AddScoped<IGenericRepository<PriceHistory, PriceHistoryDTO>, GenericRepository<ProductContext, PriceHistory, PriceHistoryDTO>>();
+            services.AddScoped<ProductRepository>();
+            services.AddScoped<CategoryRepository>();
+            services.AddScoped<BrandRepository>();
+            services.AddScoped<PriceHistoryRepository>();
 
             services.AddSwaggerGen(options =>
             {

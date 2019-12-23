@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DevOps.Products.Common.Repository;
 using DevOps.Products.Reviews.DAL;
 using DevOps.Products.Reviews.REST.API.Models;
+using DevOps.Products.Reviews.REST.API.Services.Repos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -15,9 +16,9 @@ namespace DevOps.Products.Reviews.REST.API.Controllers
     [ApiController]
     public class ReviewsController : ControllerBase
     {
-        private readonly IGenericRepository<Review, ReviewDTO> _reviewRepository;
+        private readonly ReviewRepository _reviewRepository;
 
-        public ReviewsController(IGenericRepository<Review, ReviewDTO> reviewRepository)
+        public ReviewsController(ReviewRepository reviewRepository)
         {
             _reviewRepository = reviewRepository;
         }

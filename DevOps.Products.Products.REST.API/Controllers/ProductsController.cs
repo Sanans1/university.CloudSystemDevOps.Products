@@ -6,6 +6,7 @@ using AutoMapper;
 using DevOps.Products.Common.Repository;
 using DevOps.Products.Products.DAL;
 using DevOps.Products.Products.REST.API.Models;
+using DevOps.Products.Products.REST.API.Services.Repos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,14 +17,14 @@ namespace DevOps.Products.Products.REST.API.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IGenericRepository<Product, ProductDTO> _productRepository;
-        private readonly IGenericRepository<Category, CategoryDTO> _categoryRepository;
-        private readonly IGenericRepository<Brand, BrandDTO> _brandRepository;
-        private readonly IGenericRepository<PriceHistory, PriceHistoryDTO> _priceHistoryRepository;
+        private readonly ProductRepository _productRepository;
+        private readonly CategoryRepository _categoryRepository;
+        private readonly BrandRepository _brandRepository;
+        private readonly PriceHistoryRepository _priceHistoryRepository;
 
-        public ProductsController(IMapper mapper, IGenericRepository<Product, ProductDTO> productRepository, 
-                                  IGenericRepository<Category, CategoryDTO> categoryRepository, IGenericRepository<Brand, BrandDTO> brandRepository, 
-                                  IGenericRepository<PriceHistory, PriceHistoryDTO> priceHistoryRepository)
+        public ProductsController(IMapper mapper, ProductRepository productRepository,
+            CategoryRepository categoryRepository, BrandRepository brandRepository,
+            PriceHistoryRepository priceHistoryRepository)
         {
             _mapper = mapper;
             _productRepository = productRepository;
