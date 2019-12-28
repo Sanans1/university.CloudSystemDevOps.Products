@@ -7,7 +7,7 @@
 @using DevOps.Products.Website.States
 @inject IProductListService ProductListService
 
-<h1>Products</h1>
+<h1 id="TitleHeader">Products</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
 
@@ -33,7 +33,7 @@ else
 		}
 	</select>
 
-	<table class="table">
+	<table id="ProductTable" class="table">
 		<thead>
 			<tr>
 				<th>Name</th>
@@ -52,7 +52,7 @@ else
 					<td>@product.BrandName</td>
 					<td>£@product.Price.ToString("f2")</td>
 					<td>@product.InStock</td>
-					<td><a href="/products/@product.ID">Details</a></td>
+					<td><a id="@($"Product{product.ID}DetailsButton")" href="/products/@product.ID">Details</a></td>
 				</tr>
 			}
 		</tbody>
