@@ -145,16 +145,7 @@ else
             _customer = _mapper.Map<CustomerViewModel>(await _customerFacadeService.GetCustomer(_user.Identity.Name));
         }
 
-        _reviews = _mapper.Map<ICollection<ReviewViewModel>>(await _reviewFacadeService.GetReviewCollection(_product.ID));
-
-        //Checks if the user is valid to make a review
-        if (!_reviews.Any(review => review.CustomerUsername == _user.Identity.Name))
-        {
-            if ((await _orderFacadeService.GetOrders(_user.Identity.Name, _product.ID)).Any())
-            {
-                _isValidToReview = true;
-            }
-        }
+        await RefreshReviews();
     }
 
     private async void SubmitReview()
@@ -171,9 +162,7 @@ else
             _reviewForm = new ReviewViewModel();
 
             //Do this to make sure the review IDs are correct.
-            _reviews = _mapper.Map<ICollection<ReviewViewModel>>(await _reviewFacadeService.GetReviewCollection(_product.ID));
-
-            _isValidToReview = false;
+            await RefreshReviews();
 
             this.StateHasChanged();
         }
@@ -185,9 +174,24 @@ else
 
         if (isSuccessful)
         {
-            _reviews.Remove(_reviews.Single(review => review.ID == id));
+            await RefreshReviews();
 
             this.StateHasChanged();
+        }
+    }
+
+    private async Task RefreshReviews()
+    {
+        _isValidToReview = false;
+        _reviews = _mapper.Map<ICollection<ReviewViewModel>>(await _reviewFacadeService.GetReviewCollection(_product.ID));
+
+        //Checks if the user is valid to make a review
+        if (!_reviews.Any(review => review.CustomerUsername == _user.Identity.Name))
+        {
+            if ((await _orderFacadeService.GetOrders(_user.Identity.Name, _product.ID)).Any())
+            {
+                _isValidToReview = true;
+            }
         }
     }
 }
