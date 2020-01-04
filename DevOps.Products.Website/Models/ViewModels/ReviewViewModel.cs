@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DevOps.Products.Website.Models.ViewModels
 {
@@ -13,7 +14,6 @@ namespace DevOps.Products.Website.Models.ViewModels
         public string Text { get; set; }
 
         public int ProductID { get; set; }
-
-        public CustomerViewModel Customer { get; set; }
+        public string CustomerUsername { get; set; }
     }
 }

@@ -84,7 +84,7 @@ namespace DevOps.Products.Products.REST.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            if (await _categoryRepository.EntityExists(id))
+            if (!await _categoryRepository.EntityExists(id))
             {
                 return NotFound();
             }

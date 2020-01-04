@@ -87,7 +87,7 @@ namespace DevOps.Products.Reviews.REST.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReview(int id)
         {
-            if (await _reviewRepository.EntityExists(id))
+            if (!await _reviewRepository.EntityExists(id))
             {
                 return NotFound();
             }

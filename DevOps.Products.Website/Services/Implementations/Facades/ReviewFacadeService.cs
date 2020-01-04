@@ -30,9 +30,13 @@ namespace DevOps.Products.Website.Services.Implementations.Facades
             return response.IsSuccessStatusCode;
         }
 
-        public async Task DeleteReview(int id)
+        public async Task<bool> DeleteReview(int id)
         {
-            throw new NotImplementedException();
+            string url = _apiUrl.AppendPathSegment(id);
+
+            HttpResponseMessage response = await url.DeleteAsync();
+
+            return response.IsSuccessStatusCode;
         }
     }
 }

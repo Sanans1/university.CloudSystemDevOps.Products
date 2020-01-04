@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using DevOps.Products.Website.Services.Fakes.Facades;
 using DevOps.Products.Website.Services.Implementations.Facades;
-using DevOps.Products.Website.Services.Implementations.Pages;
 using DevOps.Products.Website.Services.Interfaces.Facades;
-using DevOps.Products.Website.Services.Interfaces.Pages;
 using Flurl.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +21,7 @@ namespace DevOps.Products.Website
         private const bool SHOULD_MOCK_BRAND_FACADE = false;
         private const bool SHOULD_MOCK_REVIEW_FACADE = false;
         private const bool SHOULD_MOCK_CUSTOMER_FACADE = true;
+        private const bool SHOULD_MOCK_ORDER_FACADE = true;
 
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
@@ -35,6 +36,10 @@ namespace DevOps.Products.Website
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(
+                    CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie();
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
@@ -42,10 +47,9 @@ namespace DevOps.Products.Website
             services.AddAutoMapper(typeof(Startup));
             FlurlHttp.Configure(settings => settings.HttpClientFactory = new PollyHttpClientFactory());
 
-            //Pages
-            services.AddScoped<IProductListService, ProductListService>();
-            services.AddScoped<IProductDetailsService, ProductDetailsService>();
-            
+            //services.AddHttpContextAccessor();
+            //services.AddScoped<HttpContextAccessor>();
+
             //Facades
             if (SHOULD_MOCK_PRODUCT_FACADE && Environment.IsDevelopment()) 
                 services.AddSingleton<IProductFacadeService, FakeProductFacadeService>(); 
@@ -67,10 +71,15 @@ namespace DevOps.Products.Website
             else
                 services.AddScoped<IReviewFacadeService, ReviewFacadeService>();
 
-            if (SHOULD_MOCK_CUSTOMER_FACADE) //TODO add environment check once customer facade can do something
+            if (SHOULD_MOCK_CUSTOMER_FACADE)
                 services.AddSingleton<ICustomerFacadeService, FakeCustomerFacadeService>();
             else
                 services.AddScoped<ICustomerFacadeService, CustomerFacadeService>();
+
+            if (SHOULD_MOCK_ORDER_FACADE)
+                services.AddSingleton<IOrderFacadeService, FakeOrderFacadeService>();
+            else
+                services.AddScoped<IOrderFacadeService, OrderFacadeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,6 +102,9 @@ namespace DevOps.Products.Website
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

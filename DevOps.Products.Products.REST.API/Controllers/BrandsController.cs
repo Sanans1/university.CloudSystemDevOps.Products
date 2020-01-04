@@ -84,7 +84,7 @@ namespace DevOps.Products.Products.REST.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBrand(int id)
         {
-            if (await _brandRepository.EntityExists(id))
+            if (!await _brandRepository.EntityExists(id))
             {
                 return NotFound();
             }

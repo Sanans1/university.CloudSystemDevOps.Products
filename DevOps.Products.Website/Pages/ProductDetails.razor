@@ -1,0 +1,194 @@
+﻿@page "/products/{ProductID}"
+@using AutoMapper
+@using DevOps.Products.Website.Models.ViewModels
+@using DevOps.Products.Website.Services.Interfaces.Facades
+@using Microsoft.AspNetCore.Components
+@using DevOps.Products.Website.Models.DTOs;
+@using DevOps.Products.Website.Models.ViewModels.ProductDetails;
+@using System.Security.Claims;
+
+@inject IMapper _mapper;
+@inject IProductFacadeService _productFacadeService;
+@inject IReviewFacadeService _reviewFacadeService;
+@inject ICustomerFacadeService _customerFacadeService;
+@inject IOrderFacadeService _orderFacadeService;
+
+@if (_product == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<h1>@_product.Name</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Category</th>
+				<th>Brand</th>
+				<th>Description</th>
+				<th>Price</th>
+				<AuthorizeView>
+					<Authorized>
+						<th>Stock</th>
+					</Authorized>
+				</AuthorizeView>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>@_product.CategoryName</td>
+				<td>@_product.BrandName</td>
+				<td>@_product.Description</td>
+				<td>£@_product.Price.ToString("f2")</td>
+					@if (_user.IsInRole("Staff"))
+					{
+						<td>@_product.Quantity</td>
+					}
+					else if (_user.IsInRole("Customer"))
+					{
+						@if (_product.Quantity > 0)
+						{
+							<td>In Stock</td>
+							@if (!string.IsNullOrWhiteSpace(_customer.DeliveryAddress) && !string.IsNullOrWhiteSpace(_customer.TelephoneNumber))
+							{
+								<td><button>Buy Now</button></td>
+							}
+							else
+							{
+								<td>You need a valid delivery address and telephone number in order to place an order.</td>
+							}
+						}
+						else
+						{
+							<td>Out of Stock</td>
+						}
+					}
+			</tr>
+		</tbody>
+	</table>
+	<h2>Reviews:</h2>
+	@if (!_reviews.Any())
+	{
+		<p><em>No Reviews yet!</em></p>
+	}
+	else
+	{
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Customer</th>
+					<th>Text</th>
+					<th>Rating</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (ReviewViewModel review in _reviews)
+				{
+					<tr>
+						<td>@review.CustomerUsername</td>
+						<td>@review.Text</td>
+						<td>@review.Rating</td>
+							@if (_user.IsInRole("Staff") || _user.Identity.Name == review.CustomerUsername)
+							{
+								<button @onclick="@(e => DeleteReview(review.ID))">Delete</button>
+							}
+					</tr>
+				}
+			</tbody>
+		</table>
+	}
+
+	<AuthorizeView Roles="Customer">
+		<Authorized Context="Auth">
+			@if (_isValidToReview)
+			{
+			    <EditForm Model="@_reviewForm" OnValidSubmit="@SubmitReview">
+					<DataAnnotationsValidator />
+					<ValidationSummary />
+
+					<InputNumber @bind-Value="_reviewForm.Rating" placeholder="Add a rating..." />
+					<InputText @bind-Value="_reviewForm.Text" placeholder="Write a review..." />
+					<button type="submit">Submit</button>
+				</EditForm>
+			}
+		</Authorized>
+	</AuthorizeView>
+}
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> _authenticationStateTask { get; set; }
+    private ClaimsPrincipal _user;
+
+    private ProductViewModel _product;
+    private ICollection<ReviewViewModel> _reviews;
+    private CustomerViewModel _customer;
+
+    private bool _isValidToReview;
+
+    private ReviewViewModel _reviewForm = new ReviewViewModel();
+
+    [Parameter]
+    public string ProductID { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        int id = int.Parse(ProductID);
+
+        _product = _mapper.Map<ProductViewModel>(await _productFacadeService.GetProduct(id));
+
+        AuthenticationState authState = await _authenticationStateTask;
+        _user = authState.User;
+
+        if (_user.Identity.IsAuthenticated)
+        {
+            _customer = _mapper.Map<CustomerViewModel>(await _customerFacadeService.GetCustomer(_user.Identity.Name));
+        }
+
+        _reviews = _mapper.Map<ICollection<ReviewViewModel>>(await _reviewFacadeService.GetReviewCollection(_product.ID));
+
+        //Checks if the user is valid to make a review
+        if (!_reviews.Any(review => review.CustomerUsername == _user.Identity.Name))
+        {
+            if ((await _orderFacadeService.GetOrders(_user.Identity.Name, _product.ID)).Any())
+            {
+                _isValidToReview = true;
+            }
+        }
+    }
+
+    private async void SubmitReview()
+    {
+        _reviewForm.ProductID = _product.ID;
+        _reviewForm.CustomerUsername = _user.Identity.Name;
+
+        ReviewDTO reviewDTO = _mapper.Map<ReviewDTO>(_reviewForm);
+
+        bool isSuccessful = await _reviewFacadeService.CreateReview(reviewDTO);
+
+        if (isSuccessful)
+        {
+            _reviewForm = new ReviewViewModel();
+
+            //Do this to make sure the review IDs are correct.
+            _reviews = _mapper.Map<ICollection<ReviewViewModel>>(await _reviewFacadeService.GetReviewCollection(_product.ID));
+
+            _isValidToReview = false;
+
+            this.StateHasChanged();
+        }
+    }
+
+    private async void DeleteReview(int id)
+    {
+        bool isSuccessful = await _reviewFacadeService.DeleteReview(id);
+
+        if (isSuccessful)
+        {
+            _reviews.Remove(_reviews.Single(review => review.ID == id));
+
+            this.StateHasChanged();
+        }
+    }
+}
+

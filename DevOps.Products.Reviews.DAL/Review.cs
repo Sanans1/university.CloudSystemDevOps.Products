@@ -9,6 +9,6 @@ namespace DevOps.Products.Reviews.DAL
         public string Text { get; set; }
 
         public int ProductID { get; set; }
-        public int CustomerID { get; set; }
+        public string CustomerUsername { get; set; }
     }
 }

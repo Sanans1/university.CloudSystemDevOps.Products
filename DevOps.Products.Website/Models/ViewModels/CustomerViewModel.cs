@@ -5,7 +5,8 @@ namespace DevOps.Products.Website.Models.ViewModels
     public class CustomerViewModel
     {
         public int ID { get; set; }
-        [Required]
-        public string Name { get; set; }
+        public string Username { get; set; }
+        public string DeliveryAddress { get; set; }
+        public string TelephoneNumber { get; set; }
     }
 }

@@ -1,0 +1,144 @@
+﻿@page "/"
+
+@using AutoMapper
+@using DevOps.Products.Website.Models.ViewModels
+@using DevOps.Products.Website.Models.ViewModels.ProductList
+@using DevOps.Products.Website.Services.Interfaces
+@using DevOps.Products.Website.Services.Interfaces.Facades
+
+@inject IMapper _mapper;
+@inject IProductFacadeService _productFacadeService
+@inject ICategoryFacadeService _categoryFacadeService
+@inject IBrandFacadeService _brandFacadeService
+
+<h1 id="TitleHeader">Products</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (!_isInitialized)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<input type="text" @bind-value="SearchString" @bind-value:event="oninput" placeholder="Search..." />
+	<select @bind="SelectedCategoryID">
+		<option></option>
+		@foreach (CategoryViewModel category in _categories)
+		{
+			<option value="@category.ID">@category.Name</option>
+		}
+	</select>
+	<select @bind="SelectedBrandID">
+		<option></option>
+		@foreach (BrandViewModel brand in _brands)
+		{
+			<option value="@brand.ID">@brand.Name</option>
+		}
+	</select>
+
+	<table id="ProductTable" class="table">
+		<thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Price</th>
+                <AuthorizeView>
+                    <Authorized>
+                        <th>Stock</th>
+                    </Authorized>
+                </AuthorizeView>
+            </tr>
+		</thead>
+		<tbody>
+			@foreach (ProductViewModel product in _products)
+			{
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.CategoryName</td>
+                <td>@product.BrandName</td>
+                <td>£@product.Price.ToString("f2")</td>
+                <AuthorizeView>
+                    <Authorized>
+                        @if (@context.User.IsInRole("Staff"))
+                        {
+                            <td>@product.Quantity</td>
+                        }
+                        else if (@context.User.IsInRole("Customer"))
+                        {
+                            @if (product.Quantity > 0)
+                            {
+                                <td>In Stock</td>
+                            }
+                            else
+                            {
+                                <td>Out of Stock</td>
+                            }
+                        }
+                    </Authorized>
+                </AuthorizeView>
+                <td><a id="@($"Product{product.ID}DetailsButton")" href="/products/@product.ID">Details</a></td>
+            </tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+    private IEnumerable<ProductViewModel> _products;
+    private IEnumerable<CategoryViewModel> _categories;
+    private IEnumerable<BrandViewModel> _brands;
+
+    private string _searchString;
+    private int? _selectedCategoryID;
+    private int? _selectedBrandID;
+
+    private bool _isInitialized;
+
+    public string SearchString
+    {
+        get => _searchString;
+        set
+        {
+            _searchString = value;
+            FilterProducts();
+        }
+    }
+
+    public int? SelectedCategoryID
+    {
+        get => _selectedCategoryID;
+        set
+        {
+            _selectedCategoryID = value;
+            FilterProducts();
+        }
+    }
+
+    public int? SelectedBrandID
+    {
+        get => _selectedBrandID;
+        set
+        {
+            _selectedBrandID = value;
+            FilterProducts();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _products = _mapper.Map<IEnumerable<ProductViewModel>>(await _productFacadeService.GetProductCollection());
+        _categories = _mapper.Map<IEnumerable<CategoryViewModel>>(await _categoryFacadeService.GetCategoryCollection());
+        _brands = _mapper.Map<IEnumerable<BrandViewModel>>(await _brandFacadeService.GetBrandCollection());
+
+        _isInitialized = true;
+    }
+
+    private async void FilterProducts()
+    {
+        _products = _mapper.Map<IEnumerable<ProductViewModel>>(await _productFacadeService.GetProductCollection(_searchString, _selectedCategoryID, _selectedBrandID));
+
+        this.StateHasChanged();
+    }
+}

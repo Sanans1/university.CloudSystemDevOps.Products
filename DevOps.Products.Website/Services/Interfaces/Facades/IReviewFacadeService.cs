@@ -10,6 +10,6 @@ namespace DevOps.Products.Website.Services.Interfaces.Facades
 
         Task<bool> CreateReview(ReviewDTO reviewDTO);
 
-        Task DeleteReview(int id);
+        Task<bool> DeleteReview(int id);
     }
 }

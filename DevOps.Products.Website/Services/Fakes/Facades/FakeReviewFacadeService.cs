@@ -21,7 +21,7 @@ namespace DevOps.Products.Website.Services.Fakes.Facades
                     Rating = 3,
                     Text = "It was alright...",
                     ProductID = 1,
-                    CustomerID = 2
+                    CustomerUsername = "Bill"
                 },
                 new ReviewDTO()
                 {
@@ -29,7 +29,7 @@ namespace DevOps.Products.Website.Services.Fakes.Facades
                     Rating = 5,
                     Text = "I loved it!",
                     ProductID = 1,
-                    CustomerID = 3
+                    CustomerUsername = "Bob"
                 }
             };
         }
@@ -45,9 +45,10 @@ namespace DevOps.Products.Website.Services.Fakes.Facades
             return true;
         }
 
-        public async Task DeleteReview(int id)
+        public async Task<bool> DeleteReview(int id)
         {
             _mockReviews.Remove(_mockReviews.Single(review => review.ID == id));
+            return true;
         }
     }
 }

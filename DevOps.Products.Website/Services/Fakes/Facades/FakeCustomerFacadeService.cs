@@ -17,29 +17,30 @@ namespace DevOps.Products.Website.Services.Fakes.Facades
                 new CustomerDTO()
                 {
                     ID = 1,
-                    Name = "Lewis"
+                    Username = "Lewis",
+                    DeliveryAddress = "FakeTown, FakeRoad, 1",
+                    TelephoneNumber = "12345678"
                 },
                 new CustomerDTO()
                 {
                     ID = 2,
-                    Name = "Sarah"
+                    Username = "Bill",
+                    DeliveryAddress = "FakeTown, FakeRoad, 2",
+                    TelephoneNumber = "12345678"
                 },
                 new CustomerDTO()
                 {
                     ID = 3,
-                    Name = "Sven"
+                    Username = "Bob",
+                    DeliveryAddress = "FakeTown, FakeRoad, 3",
+                    TelephoneNumber = "12345678"
                 }
             };
         }
 
-        public async Task<CustomerDTO> GetCurrentCustomer()
+        public async Task<CustomerDTO> GetCustomer(string customerUsername)
         {
-            return _mockCustomers.First();
-        }
-
-        public async Task<CustomerDTO> GetCustomer(int id)
-        {
-            return _mockCustomers.Single(customer => customer.ID == id);
+            return _mockCustomers.Single(customer => customer.Username == customerUsername);
         }
     }
 }

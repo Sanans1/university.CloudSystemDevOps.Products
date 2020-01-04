@@ -114,7 +114,7 @@ namespace DevOps.Products.Products.REST.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            if (await _productRepository.EntityExists(id))
+            if (!await _productRepository.EntityExists(id))
             {
                 return NotFound();
             }
