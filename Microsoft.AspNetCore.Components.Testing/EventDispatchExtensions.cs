@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace Microsoft.AspNetCore.Components.Testing
 {
@@ -36,6 +37,16 @@ namespace Microsoft.AspNetCore.Components.Testing
         public static Task ChangeAsync(this HtmlNode element, string newValue)
         {
             return element.TriggerEventAsync("onchange", new ChangeEventArgs { Value = newValue });
+        }
+
+        public static void Input(this HtmlNode element, string newValue)
+        {
+            _ = InputAsync(element, newValue);
+        }
+
+        public static Task InputAsync(this HtmlNode element, string newValue)
+        {
+            return element.TriggerEventAsync("oninput", new ChangeEventArgs { Value = newValue });
         }
 
         public static void Change(this HtmlNode element, bool newValue)
