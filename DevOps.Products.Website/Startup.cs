@@ -47,9 +47,6 @@ namespace DevOps.Products.Website
             services.AddAutoMapper(typeof(Startup));
             FlurlHttp.Configure(settings => settings.HttpClientFactory = new PollyHttpClientFactory());
 
-            //services.AddHttpContextAccessor();
-            //services.AddScoped<HttpContextAccessor>();
-
             //Facades
             if (SHOULD_MOCK_PRODUCT_FACADE && Environment.IsDevelopment()) 
                 services.AddSingleton<IProductFacadeService, FakeProductFacadeService>(); 

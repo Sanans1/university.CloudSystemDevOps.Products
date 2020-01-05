@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DevOps.Products.Website\DevOps.Products.Website.csproj" />
+    <ProjectReference Include="..\Microsoft.AspNetCore.Components.Testing\Microsoft.AspNetCore.Components.Testing.csproj" />
   </ItemGroup>
 
 </Project>

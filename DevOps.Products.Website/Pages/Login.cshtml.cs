@@ -16,7 +16,6 @@ namespace DevOps.Products.Website.Pages
     {
         private const string CLAIM_ROLE_CUSTOMER = "Customer";
         private const string CLAIM_ROLE_STAFF = "Staff";
-        private const string STAFF_PASSWORD = "246813579";
 
         public string ReturnUrl { get; set; }
 
