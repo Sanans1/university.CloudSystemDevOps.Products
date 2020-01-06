@@ -7,5 +7,6 @@ namespace DevOps.Products.Website.Services.Interfaces.Facades
     public interface IOrderFacadeService
     {
         Task<IEnumerable<OrderDTO>> GetOrders(string customerUsername, int productID);
+        Task<bool> CreateOrder(OrderDTO order);
     }
 }

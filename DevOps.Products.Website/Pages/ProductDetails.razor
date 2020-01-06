@@ -12,6 +12,7 @@
 @inject IReviewFacadeService _reviewFacadeService;
 @inject ICustomerFacadeService _customerFacadeService;
 @inject IOrderFacadeService _orderFacadeService;
+@inject NavigationManager NavigationManager
 
 @if (_product == null)
 {
@@ -40,29 +41,29 @@ else
 				<td id="ProductBrand">@_product.BrandName</td>
 				<td id="ProductDescription">@_product.Description</td>
 				<td id="ProductPrice">£@_product.Price.ToString("f2")</td>
-					@if (_user.IsInRole("Staff"))
+				@if (_user.IsInRole("Staff"))
+				{
+					<td id="ProductQuantity">@_product.Quantity</td>
+				}
+				else if (_user.IsInRole("Customer"))
+				{
+					@if (_product.Quantity > 0)
 					{
-						<td id="ProductQuantity">@_product.Quantity</td>
-					}
-					else if (_user.IsInRole("Customer"))
-					{
-						@if (_product.Quantity > 0)
+						<td id="ProductQuantity">In Stock</td>
+						@if (!string.IsNullOrWhiteSpace(_customer.DeliveryAddress) && !string.IsNullOrWhiteSpace(_customer.TelephoneNumber))
 						{
-							<td id="ProductQuantity">In Stock</td>
-							@if (!string.IsNullOrWhiteSpace(_customer.DeliveryAddress) && !string.IsNullOrWhiteSpace(_customer.TelephoneNumber))
-							{
-								<td><button id="BuyNowButton">Buy Now</button></td>
-							}
-							else
-							{
-								<td id="ValidationText">You need a valid delivery address and telephone number in order to place an order.</td>
-							}
+							<td><button id="BuyNowButton" @onclick="@(e => SubmitOrder())">Buy Now</button></td>
 						}
 						else
 						{
-							<td id="ProductQuantity">Out of Stock</td>
+							<td id="ValidationText">You need a valid delivery address and telephone number in order to place an order.</td>
 						}
 					}
+					else
+					{
+						<td id="ProductQuantity">Out of Stock</td>
+					}
+				}
 			</tr>
 		</tbody>
 	</table>
@@ -88,10 +89,10 @@ else
 						<td id="ReviewCustomerName">@review.CustomerUsername</td>
 						<td id="ReviewText">@review.Text</td>
 						<td id="ReviewRating">@review.Rating</td>
-							@if (_user.IsInRole("Staff") || _user.Identity.Name == review.CustomerUsername)
-							{
-								<button id="ReviewDeleteButton" @onclick="@(e => DeleteReview(review.ID))">Delete</button>
-							}
+						@if (_user.IsInRole("Staff") || _user.Identity.Name == review.CustomerUsername)
+						{
+							<button id="ReviewDeleteButton" @onclick="@(e => DeleteReview(review.ID))">Delete</button>
+						}
 					</tr>
 				}
 			</tbody>
@@ -102,7 +103,7 @@ else
 		<Authorized Context="Auth">
 			@if (_isValidToReview)
 			{
-			    <EditForm id="ReviewForm" Model="@_reviewForm" OnValidSubmit="@SubmitReview">
+				<EditForm id="ReviewForm" Model="@_reviewForm" OnValidSubmit="@SubmitReview">
 					<DataAnnotationsValidator />
 					<ValidationSummary />
 
@@ -116,83 +117,97 @@ else
 }
 
 @code {
-    [CascadingParameter]
-    private Task<AuthenticationState> _authenticationStateTask { get; set; }
-    private ClaimsPrincipal _user;
+	[CascadingParameter]
+	private Task<AuthenticationState> _authenticationStateTask { get; set; }
+	private ClaimsPrincipal _user;
 
-    private ProductViewModel _product;
-    private ICollection<ReviewViewModel> _reviews;
-    private CustomerViewModel _customer;
+	private ProductViewModel _product;
+	private ICollection<ReviewViewModel> _reviews;
+	private CustomerViewModel _customer;
 
-    private bool _isValidToReview;
+	private bool _isValidToReview;
 
-    private ReviewViewModel _reviewForm = new ReviewViewModel();
+	private ReviewViewModel _reviewForm = new ReviewViewModel();
 
-    [Parameter]
-    public string ProductID { get; set; }
+	[Parameter]
+	public string ProductID { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        int id = int.Parse(ProductID);
+	protected override async Task OnInitializedAsync()
+	{
+		int id = int.Parse(ProductID);
 
-        _product = _mapper.Map<ProductViewModel>(await _productFacadeService.GetProduct(id));
+		_product = _mapper.Map<ProductViewModel>(await _productFacadeService.GetProduct(id));
 
-        AuthenticationState authState = await _authenticationStateTask;
-        _user = authState.User;
+		AuthenticationState authState = await _authenticationStateTask;
+		_user = authState.User;
 
-        if (_user.Identity.IsAuthenticated)
-        {
-            _customer = _mapper.Map<CustomerViewModel>(await _customerFacadeService.GetCustomer(_user.Identity.Name));
-        }
+		if (_user.Identity.IsAuthenticated)
+		{
+			_customer = _mapper.Map<CustomerViewModel>(await _customerFacadeService.GetCustomer(_user.Identity.Name));
+		}
 
-        await RefreshReviews();
-    }
+		await RefreshReviews();
+	}
 
-    private async void SubmitReview()
-    {
-        _reviewForm.ProductID = _product.ID;
-        _reviewForm.CustomerUsername = _user.Identity.Name;
+	private async void SubmitReview()
+	{
+		_reviewForm.ProductID = _product.ID;
+		_reviewForm.CustomerUsername = _user.Identity.Name;
 
-        ReviewDTO reviewDTO = _mapper.Map<ReviewDTO>(_reviewForm);
+		ReviewDTO reviewDTO = _mapper.Map<ReviewDTO>(_reviewForm);
 
-        bool isSuccessful = await _reviewFacadeService.CreateReview(reviewDTO);
+		bool isSuccessful = await _reviewFacadeService.CreateReview(reviewDTO);
 
-        if (isSuccessful)
-        {
-            _reviewForm = new ReviewViewModel();
+		if (isSuccessful)
+		{
+			_reviewForm = new ReviewViewModel();
 
-            //Do this to make sure the review IDs are correct.
-            await RefreshReviews();
+			//Do this to make sure the review IDs are correct.
+			await RefreshReviews();
 
-            this.StateHasChanged();
-        }
-    }
+			this.StateHasChanged();
+		}
+	}
 
-    private async void DeleteReview(int id)
-    {
-        bool isSuccessful = await _reviewFacadeService.DeleteReview(id);
+	private async void DeleteReview(int id)
+	{
+		bool isSuccessful = await _reviewFacadeService.DeleteReview(id);
 
-        if (isSuccessful)
-        {
-            await RefreshReviews();
+		if (isSuccessful)
+		{
+			await RefreshReviews();
 
-            this.StateHasChanged();
-        }
-    }
+			this.StateHasChanged();
+		}
+	}
 
-    private async Task RefreshReviews()
-    {
-        _isValidToReview = false;
-        _reviews = _mapper.Map<ICollection<ReviewViewModel>>(await _reviewFacadeService.GetReviewCollection(_product.ID));
+	private async Task RefreshReviews()
+	{
+		_isValidToReview = false;
+		_reviews = _mapper.Map<ICollection<ReviewViewModel>>(await _reviewFacadeService.GetReviewCollection(_product.ID));
 
-        //Checks if the user is valid to make a review
-        if (!_reviews.Any(review => review.CustomerUsername == _user.Identity.Name))
-        {
-            if ((await _orderFacadeService.GetOrders(_user.Identity.Name, _product.ID)).Any())
-            {
-                _isValidToReview = true;
-            }
-        }
-    }
+		//Checks if the user is valid to make a review
+		if (!_reviews.Any(review => review.CustomerUsername == _user.Identity.Name))
+		{
+			if ((await _orderFacadeService.GetOrders(_user.Identity.Name, _product.ID)).Any())
+			{
+				_isValidToReview = true;
+			}
+		}
+	}
+
+	private async void SubmitOrder()
+	{
+		OrderDTO order = new OrderDTO
+		{
+			CustomerUsername = _user.Identity.Name,
+			ProductID = _product.ID
+		};
+
+		if (await _orderFacadeService.CreateOrder(order))
+		{
+			NavigationManager.NavigateTo("/order");
+		}
+	}
 }
 

@@ -12,7 +12,7 @@ namespace DevOps.Products.Website.Services.Fakes.Facades
 
         #region fields
 
-        private readonly IEnumerable<OrderDTO> _mockOrders;
+        private readonly ICollection<OrderDTO> _mockOrders;
 
         #endregion
 
@@ -47,6 +47,12 @@ namespace DevOps.Products.Website.Services.Fakes.Facades
         {
             return _mockOrders.Where(product =>
                 product.CustomerUsername == customerUsername && product.ProductID == productID);
+        }
+
+        public async Task<bool> CreateOrder(OrderDTO order)
+        {
+            _mockOrders.Add(order);
+            return true;
         }
 
         #endregion

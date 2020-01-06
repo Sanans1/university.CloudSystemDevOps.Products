@@ -25,5 +25,12 @@ namespace DevOps.Products.Website.Services.Implementations.Facades
 
             return orders;
         }
+
+        public async Task<bool> CreateOrder(OrderDTO order)
+        {
+            HttpResponseMessage response = await _apiUrl.PostJsonAsync(order);
+
+            return response.IsSuccessStatusCode;
+        }
     }
 }
