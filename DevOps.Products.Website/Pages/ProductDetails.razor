@@ -29,38 +29,38 @@ else
 				<th>Price</th>
 				<AuthorizeView>
 					<Authorized>
-						<th>Stock</th>
+						<th id="ProductHeaderQuantity">Stock</th>
 					</Authorized>
 				</AuthorizeView>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td>@_product.CategoryName</td>
-				<td>@_product.BrandName</td>
-				<td>@_product.Description</td>
-				<td>£@_product.Price.ToString("f2")</td>
+				<td id="ProductName">@_product.CategoryName</td>
+				<td id="ProductBrand">@_product.BrandName</td>
+				<td id="ProductDescription">@_product.Description</td>
+				<td id="ProductPrice">£@_product.Price.ToString("f2")</td>
 					@if (_user.IsInRole("Staff"))
 					{
-						<td>@_product.Quantity</td>
+						<td id="ProductQuantity">@_product.Quantity</td>
 					}
 					else if (_user.IsInRole("Customer"))
 					{
 						@if (_product.Quantity > 0)
 						{
-							<td>In Stock</td>
+							<td id="ProductQuantity">In Stock</td>
 							@if (!string.IsNullOrWhiteSpace(_customer.DeliveryAddress) && !string.IsNullOrWhiteSpace(_customer.TelephoneNumber))
 							{
-								<td><button>Buy Now</button></td>
+								<td><button id="BuyNowButton">Buy Now</button></td>
 							}
 							else
 							{
-								<td>You need a valid delivery address and telephone number in order to place an order.</td>
+								<td id="ValidationText">You need a valid delivery address and telephone number in order to place an order.</td>
 							}
 						}
 						else
 						{
-							<td>Out of Stock</td>
+							<td id="ProductQuantity">Out of Stock</td>
 						}
 					}
 			</tr>
@@ -76,21 +76,21 @@ else
 		<table class="table">
 			<thead>
 				<tr>
-					<th>Customer</th>
-					<th>Text</th>
-					<th>Rating</th>
+					<th id="ReviewHeaderCustomerName">Customer</th>
+					<th id="ReviewHeaderText">Text</th>
+					<th id="ReviewHeaderRating">Rating</th>
 				</tr>
 			</thead>
 			<tbody>
 				@foreach (ReviewViewModel review in _reviews)
 				{
-					<tr>
-						<td>@review.CustomerUsername</td>
-						<td>@review.Text</td>
-						<td>@review.Rating</td>
+					<tr id="@($"ReviewRow{review.ID}")">
+						<td id="ReviewCustomerName">@review.CustomerUsername</td>
+						<td id="ReviewText">@review.Text</td>
+						<td id="ReviewRating">@review.Rating</td>
 							@if (_user.IsInRole("Staff") || _user.Identity.Name == review.CustomerUsername)
 							{
-								<button @onclick="@(e => DeleteReview(review.ID))">Delete</button>
+								<button id="ReviewDeleteButton" @onclick="@(e => DeleteReview(review.ID))">Delete</button>
 							}
 					</tr>
 				}
@@ -102,13 +102,13 @@ else
 		<Authorized Context="Auth">
 			@if (_isValidToReview)
 			{
-			    <EditForm Model="@_reviewForm" OnValidSubmit="@SubmitReview">
+			    <EditForm id="ReviewForm" Model="@_reviewForm" OnValidSubmit="@SubmitReview">
 					<DataAnnotationsValidator />
 					<ValidationSummary />
 
-					<InputNumber @bind-Value="_reviewForm.Rating" placeholder="Add a rating..." />
-					<InputText @bind-Value="_reviewForm.Text" placeholder="Write a review..." />
-					<button type="submit">Submit</button>
+					<InputNumber id="ReviewFormRatingInput" @bind-Value="_reviewForm.Rating" placeholder="Add a rating..." />
+					<InputText id="ReviewFormTextInput" @bind-Value="_reviewForm.Text" placeholder="Write a review..." />
+					<button id="ReviewFormSubmitButton" type="submit">Submit</button>
 				</EditForm>
 			}
 		</Authorized>

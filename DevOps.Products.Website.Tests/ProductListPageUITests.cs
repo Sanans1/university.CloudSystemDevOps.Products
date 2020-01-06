@@ -32,9 +32,9 @@ namespace DevOps.Products.Website.Tests
         {
             MapperConfiguration mapperConfiguration = new MapperConfiguration(configuration =>
             {
-                configuration.CreateMap<CategoryDTO, CategoryViewModel>();
-                configuration.CreateMap<BrandDTO, BrandViewModel>();
-                configuration.CreateMap<ProductDTO, Models.ViewModels.ProductList.ProductViewModel>();
+                configuration.CreateMap<CategoryDTO, CategoryViewModel>().ReverseMap();
+                configuration.CreateMap<BrandDTO, BrandViewModel>().ReverseMap();
+                configuration.CreateMap<ProductDTO, Models.ViewModels.ProductList.ProductViewModel>().ReverseMap();
             });
 
             _testHost.ConfigureServices(services =>
@@ -51,7 +51,7 @@ namespace DevOps.Products.Website.Tests
         [Test]
         public void ProductListPage_WhenExecuted_ProductListPageLoads()
         {
-            ParameterView parameterView = AuthenticationStateService.AuthenticationStateCreator();
+            ParameterView parameterView = AuthenticationStateService.PageParametersCreator();
 
             RenderedComponent<ProductListWrapperTestComponent> component = _testHost.AddComponent<ProductListWrapperTestComponent>(parameterView);
 
@@ -65,7 +65,7 @@ namespace DevOps.Products.Website.Tests
         [Test]
         public void ProductListPage_SearchInputGaveString_ProductListOnlyShowsRelevantRows([Values("Orange", "Banana", "Broccoli")] string searchString)
         {
-            ParameterView parameterView = AuthenticationStateService.AuthenticationStateCreator();
+            ParameterView parameterView = AuthenticationStateService.PageParametersCreator();
 
             RenderedComponent<ProductListWrapperTestComponent> component = _testHost.AddComponent<ProductListWrapperTestComponent>(parameterView);
 
@@ -79,7 +79,7 @@ namespace DevOps.Products.Website.Tests
         [Test, Sequential]
         public void ProductListPage_CategorySelectValueChosen_ProductListOnlyShowsRelevantRows([Values("1", "2")] string categoryID, [Values("Fruit", "Vegetables")] string categoryName)
         {
-            ParameterView parameterView = AuthenticationStateService.AuthenticationStateCreator();
+            ParameterView parameterView = AuthenticationStateService.PageParametersCreator();
 
             RenderedComponent<ProductListWrapperTestComponent> component = _testHost.AddComponent<ProductListWrapperTestComponent>(parameterView);
 
@@ -93,7 +93,7 @@ namespace DevOps.Products.Website.Tests
         [Test, Sequential]
         public void ProductListPage_BrandSelectValueChosen_ProductListOnlyShowsRelevantRows([Values("1", "2")] string brandID, [Values("Pablo&#x27;s Farm", "Marge&#x27;s Farm")] string brandName)
         {
-            ParameterView parameterView = AuthenticationStateService.AuthenticationStateCreator();
+            ParameterView parameterView = AuthenticationStateService.PageParametersCreator();
 
             RenderedComponent<ProductListWrapperTestComponent> component = _testHost.AddComponent<ProductListWrapperTestComponent>(parameterView);
 
@@ -107,7 +107,7 @@ namespace DevOps.Products.Website.Tests
         [Test]
         public void ProductListPage_NotAuthenticated_CantSeeStock()
         {
-            ParameterView parameterView = AuthenticationStateService.AuthenticationStateCreator();
+            ParameterView parameterView = AuthenticationStateService.PageParametersCreator();
 
             RenderedComponent<ProductListWrapperTestComponent> component = _testHost.AddComponent<ProductListWrapperTestComponent>(parameterView);
 
@@ -123,7 +123,7 @@ namespace DevOps.Products.Website.Tests
         [Test]
         public void ProductListPage_AuthenticatedAsCustomer_CanSeeStockText()
         {
-            ParameterView parameterView = AuthenticationStateService.AuthenticationStateCreator(new Claim(ClaimTypes.Role, "Customer"));
+            ParameterView parameterView = AuthenticationStateService.PageParametersCreator(null, new Claim(ClaimTypes.Role, "Customer"));
 
             RenderedComponent<ProductListWrapperTestComponent> component = _testHost.AddComponent<ProductListWrapperTestComponent>(parameterView);
 
@@ -139,7 +139,7 @@ namespace DevOps.Products.Website.Tests
         [Test]
         public void ProductListPage_AuthenticatedAsStaff_CanSeeStockQuantity()
         {
-            ParameterView parameterView = AuthenticationStateService.AuthenticationStateCreator(new Claim(ClaimTypes.Role, "Staff"));
+            ParameterView parameterView = AuthenticationStateService.PageParametersCreator(null, new Claim(ClaimTypes.Role, "Staff"));
 
             RenderedComponent<ProductListWrapperTestComponent> component = _testHost.AddComponent<ProductListWrapperTestComponent>(parameterView);
 
