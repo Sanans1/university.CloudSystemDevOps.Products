@@ -18,8 +18,6 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 
 namespace DevOps.Products.Website.Tests
 {
