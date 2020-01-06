@@ -26,14 +26,16 @@ namespace DevOps.Products.Website.Services.Fakes.Facades
                     ID = 2,
                     Username = "Bill",
                     DeliveryAddress = "FakeTown, FakeRoad, 2",
-                    TelephoneNumber = "12345678"
+                    TelephoneNumber = "12345678",
+                    CanPurchase = true
                 },
                 new CustomerDTO()
                 {
                     ID = 3,
                     Username = "Bob",
                     DeliveryAddress = "FakeTown, FakeRoad, 3",
-                    TelephoneNumber = "12345678"
+                    TelephoneNumber = "12345678",
+                    CanPurchase = true
                 }
             };
         }

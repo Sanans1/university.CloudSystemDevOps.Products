@@ -6,5 +6,6 @@
         public string Username { get; set; }
         public string DeliveryAddress { get; set; }
         public string TelephoneNumber { get; set; }
+        public bool CanPurchase { get; set; }
     }
 }

@@ -52,7 +52,10 @@ else
 						<td id="ProductQuantity">In Stock</td>
 						@if (!string.IsNullOrWhiteSpace(_customer.DeliveryAddress) && !string.IsNullOrWhiteSpace(_customer.TelephoneNumber))
 						{
-							<td><button id="BuyNowButton" @onclick="@(e => SubmitOrder())">Buy Now</button></td>
+							@if (_customer.CanPurchase)
+							{
+							    <td><button id="BuyNowButton" @onclick="@(e => SubmitOrder())">Buy Now</button></td>
+							}
 						}
 						else
 						{
