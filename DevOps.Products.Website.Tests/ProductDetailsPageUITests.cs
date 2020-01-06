@@ -228,11 +228,9 @@ namespace DevOps.Products.Website.Tests
 
             Assert.AreEqual(2, tableRows.Count());
 
-            for (int x = 2; x > 0; x--)
+            for (int x = 0; x < 2; x++)
             {
                 ICollection<HtmlNode> deleteButtons = component.FindAll("#ReviewDeleteButton");
-
-                Assert.AreEqual(x, deleteButtons.Count());
 
                 deleteButtons.First().Click();
             }
