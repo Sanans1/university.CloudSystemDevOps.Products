@@ -39,6 +39,6 @@ namespace DevOps.Products.Website
             }
         }
 
-        public static AsyncPolicyWrap<HttpResponseMessage> PolicyStrategy => Policy.WrapAsync(RetryPolicy, TimeoutPolicy, CircuitBreakerPolicy);
+        public static AsyncPolicyWrap<HttpResponseMessage> PolicyStrategy => Policy.WrapAsync(TimeoutPolicy, RetryPolicy, CircuitBreakerPolicy);
     }
 }

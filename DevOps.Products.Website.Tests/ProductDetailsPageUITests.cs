@@ -39,6 +39,7 @@ namespace DevOps.Products.Website.Tests
             {
                 services.AddLogging();
                 services.AddAuthorization();
+                services.AddServerSideBlazor();
                 services.AddSingleton<IMapper>(new Mapper(mapperConfiguration));
                 services.AddSingleton<IProductFacadeService, FakeProductFacadeService>();
                 services.AddSingleton<IReviewFacadeService, FakeReviewFacadeService>();
