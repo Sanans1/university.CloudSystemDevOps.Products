@@ -216,7 +216,7 @@ namespace DevOps.Products.Website.Tests
         }
 
         [Test]
-        public async Task ProductDetailsPage_AuthenticatedAsStaffTriesToRemoveAllReviews_CanRemoveAllReviews()
+        public void ProductDetailsPage_AuthenticatedAsStaffTriesToRemoveAllReviews_CanRemoveAllReviews()
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>() { ["ProductID"] = "1" };
 
