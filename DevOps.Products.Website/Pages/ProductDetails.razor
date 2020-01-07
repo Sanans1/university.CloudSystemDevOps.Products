@@ -14,7 +14,7 @@
 @inject IOrderFacadeService _orderFacadeService;
 @inject NavigationManager NavigationManager
 
-@if (_product == null)
+@if (!_isInitialized)
 {
 	<p><em>Loading...</em></p>
 }
@@ -130,6 +130,8 @@ else
 
 	private bool _isValidToReview;
 
+	private bool _isInitialized {get;set;}
+
 	private ReviewViewModel _reviewForm = new ReviewViewModel();
 
 	[Parameter]
@@ -150,6 +152,8 @@ else
 		}
 
 		await RefreshReviews();
+
+		_isInitialized = true;
 	}
 
 	private async void SubmitReview()
